@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HTB Writeup Bot — Portfolio — Khalil Gueye</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Serif:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #FFFFFF;
+    --bg-raise: #F4F6F9;
+    --panel: #FFFFFF;
+    --panel-border: #D5DCE5;
+    --text: #0B1F3A;
+    --text-dim: #4A5A70;
+    --text-faint: #8A97A8;
+    --accent: #1F4E79;
+    --accent-dim: #5A7CA0;
+    --mono: 'IBM Plex Mono', ui-monospace, 'SF Mono', Consolas, monospace;
+    --sans: 'IBM Plex Sans', -apple-system, sans-serif;
+    --serif: 'IBM Plex Serif', Georgia, serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body{
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    line-height: 1.6;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  a { color: inherit; text-decoration: none; }
+  ::selection { background: var(--accent); color: #fff; }
+  :focus-visible{ outline: 2px solid var(--accent); outline-offset: 3px; }
+
+  .wrap{ max-width: 780px; margin: 0 auto; padding: 0 32px; }
+
+  /* ---------- HEADER ---------- */
+  .site-head{
+    border-bottom: 1px solid var(--panel-border);
+    position: sticky; top: 0;
+    background: rgba(255,255,255,0.9);
+    backdrop-filter: blur(8px);
+    z-index: 50;
+  }
+  .site-head .inner{
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 20px 0; max-width: 1020px; margin: 0 auto; padding-left: 32px; padding-right: 32px;
+  }
+  .brand{
+    display: flex; align-items: center; gap: 11px;
+    font-weight: 600; font-size: 15px; letter-spacing: 0.01em; color: var(--text);
+  }
+  .brand .mark{ width: 12px; height: 12px; background: var(--accent); flex-shrink: 0; border-radius: 1px; }
+  .site-nav{ display: flex; gap: 30px; }
+  .site-nav a{ font-size: 14.5px; color: var(--text-dim); font-weight: 500; transition: color 0.15s ease; }
+  .site-nav a:hover{ color: var(--accent); }
+  .site-nav a.current{ color: var(--text); }
+
+  /* ---------- HERO (airy, plain-language) ---------- */
+  .hero{ padding: 60px 0 52px; }
+  .back{
+    font-family: var(--mono); font-size: 12.5px; color: var(--text-faint);
+    display: inline-block; margin-bottom: 30px; transition: color 0.15s ease;
+  }
+  .back:hover{ color: var(--accent); }
+  .hero h1{
+    font-family: var(--serif); font-weight: 600;
+    font-size: clamp(40px, 6vw, 60px); letter-spacing: -0.02em;
+    line-height: 1.03; color: var(--text);
+  }
+  .hero .summary{
+    margin-top: 26px; font-size: 17px; line-height: 1.75;
+    color: var(--text-dim); max-width: 62ch;
+  }
+  .hero .tags{ margin-top: 26px; display: flex; flex-wrap: wrap; gap: 7px; }
+  .hero .tag{
+    font-family: var(--mono); font-size: 11px; letter-spacing: 0.02em;
+    color: var(--accent); background: #EEF3F9; border: 1px solid #BCD0E4;
+    padding: 3px 10px; border-radius: 2px;
+  }
+
+  /* ---------- SECTIONS ---------- */
+  .section{ padding: 52px 0; border-top: 1px solid var(--panel-border); }
+  .section h2{
+    font-family: var(--serif); font-weight: 600;
+    font-size: clamp(28px, 4vw, 36px); letter-spacing: -0.01em; color: var(--text);
+  }
+  .section .lead{
+    margin-top: 12px; font-size: 16px; line-height: 1.7;
+    color: var(--text-dim); max-width: 62ch;
+  }
+
+  /* pipeline (a genuine sequence, so numbered) */
+  .steps{ margin-top: 30px; }
+  .step{
+    display: grid; grid-template-columns: 42px 1fr; gap: 20px;
+    padding: 22px 0; border-bottom: 1px solid var(--panel-border);
+  }
+  .step:last-child{ border-bottom: none; }
+  .step .n{ font-family: var(--mono); font-size: 14px; font-weight: 600; color: var(--accent); padding-top: 2px; }
+  .step h3{ font-size: 16.5px; font-weight: 600; color: var(--text); margin-bottom: 6px; }
+  .step p{ font-size: 14.5px; color: var(--text-dim); line-height: 1.65; }
+  .step code{ font-family: var(--mono); font-size: 0.86em; color: var(--accent); background: var(--bg-raise); border: 1px solid var(--panel-border); border-radius: 3px; padding: 1px 5px; }
+
+  /* prose */
+  .prose{ margin-top: 20px; }
+  .prose p{ font-size: 16px; color: var(--text-dim); line-height: 1.72; margin-bottom: 16px; max-width: 64ch; }
+  .prose p strong{ color: var(--text); font-weight: 600; }
+  .prose ul{ margin: 0 0 18px; padding-left: 0; list-style: none; max-width: 64ch; }
+  .prose li{ font-size: 15.5px; color: var(--text-dim); padding-left: 22px; position: relative; margin-bottom: 11px; line-height: 1.62; }
+  .prose li::before{ content: '—'; color: var(--accent-dim); position: absolute; left: 0; }
+  .prose li strong{ color: var(--text); font-weight: 600; }
+  .prose code{ font-family: var(--mono); font-size: 0.88em; background: var(--bg-raise); border: 1px solid var(--panel-border); border-radius: 3px; padding: 1px 5px; color: var(--accent); }
+
+  /* code block */
+  .code{ background: var(--bg-raise); border: 1px solid var(--panel-border); border-radius: 4px; margin: 22px 0; overflow: hidden; }
+  .code-bar{ padding: 8px 14px; border-bottom: 1px solid var(--panel-border); font-family: var(--mono); font-size: 11px; letter-spacing: 0.04em; color: var(--text-faint); }
+  .code pre{ margin: 0; padding: 14px 16px; overflow-x: auto; font-family: var(--mono); font-size: 13px; line-height: 1.55; color: var(--text); }
+  .code .c{ color: var(--text-faint); }
+
+  /* mechanism note */
+  .note{ border-left: 3px solid var(--accent); background: #EEF3F9; padding: 15px 18px; border-radius: 0 4px 4px 0; margin: 22px 0; }
+  .note .lbl{ font-family: var(--mono); font-size: 11px; letter-spacing: 0.03em; color: var(--accent); font-weight: 600; display: block; margin-bottom: 6px; }
+  .note p{ margin: 0; font-size: 15px; line-height: 1.65; color: var(--text-dim); max-width: 62ch; }
+  .note p strong{ color: var(--text); }
+
+  /* ---------- FOOTER ---------- */
+  .site-foot{ border-top: 1px solid var(--panel-border); padding: 28px 0 44px; margin-top: 40px; }
+  .site-foot .inner{ display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 14px; font-size: 13.5px; color: var(--text-faint); max-width: 1020px; margin: 0 auto; padding: 0 32px; }
+  .site-foot a{ color: var(--text-dim); font-weight: 500; }
+  .site-foot a:hover{ color: var(--accent); }
+  .site-foot .links{ display: flex; gap: 22px; }
+
+  @media (max-width: 640px){
+    .hero{ padding: 44px 0 40px; }
+    .section{ padding: 44px 0; }
+  }
+</style>
+</head>
+<body>
+
+<header class="site-head">
+  <div class="inner">
+    <a href="../index.html" class="brand"><span class="mark"></span>Khalil Gueye</a>
+    <nav class="site-nav">
+      <a href="../writeups/">Writeups</a>
+      <a href="index.html" class="current">Portfolio</a>
+      <a href="../videos/">Videos</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- ===== HERO — plain language, what it is ===== -->
+  <section class="hero">
+    <a href="index.html" class="back">← Portfolio</a>
+    <h1>HTB Writeup Bot</h1>
+    <p class="summary">After rooting a machine, the last thing you want to do is sit down and write it up. This agent removes that step. I record a voice note walking through the box; it transcribes the audio on my own machine, drafts a structured writeup with Claude, and commits the finished page straight to this site — no editor, no copy-paste, no server to babysit. Every writeup in the Writeups section is published by this pipeline.</p>
+    <div class="tags">
+      <span class="tag">Python</span>
+      <span class="tag">Whisper</span>
+      <span class="tag">Claude API</span>
+      <span class="tag">Telegram</span>
+      <span class="tag">GitHub API</span>
+      <span class="tag">Docker</span>
+    </div>
+  </section>
+
+  <!-- ===== HOW IT WORKS — the intricacies ===== -->
+  <section class="section">
+    <h2>How it works</h2>
+    <p class="lead">Five stages, each isolated so a failure in one is legible and recoverable rather than a silent dead end. The bot reaches out to Telegram rather than being reached, so it runs from home with no public endpoint exposed.</p>
+
+    <div class="steps">
+      <div class="step">
+        <div class="n">01</div>
+        <div>
+          <h3>Capture</h3>
+          <p>A Telegram voice note triggers everything. The bot long-polls Telegram — it asks for new messages rather than exposing a webhook — so nothing inbound has to reach the machine. Every message is checked against a single allowed user ID, so only I can drive it.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="n">02</div>
+        <div>
+          <h3>Transcribe — locally</h3>
+          <p>The audio is transcribed by <code>faster-whisper</code> running the large-v3-turbo model on-device. No transcription API, no per-minute cost, and the recording never leaves the machine. The model loads once and stays resident, so an idle bot costs nothing to keep running.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="n">03</div>
+        <div>
+          <h3>Draft</h3>
+          <p>The transcript goes to Claude under a strict prompt that returns JSON only — title, metadata, categories, and an HTML body built from a fixed block vocabulary. The model reasons over what I said; it does not get to invent the page's structure.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="n">04</div>
+        <div>
+          <h3>Render</h3>
+          <p>That JSON is poured into a static HTML template. Categories become tag chips, the body slots into a page shell whose markup and styling are fixed — so every writeup comes out visually identical, no matter what the model wrote.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="n">05</div>
+        <div>
+          <h3>Publish</h3>
+          <p>The finished page is committed through the GitHub Contents API, and the index page is updated to link it. GitHub Pages rebuilds within a minute, and the bot replies with the live URL.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="note">
+      <span class="lbl">Why transcription runs locally</span>
+      <p>Security transcripts are dense with terms a general model mishears — CVE numbers, tool names, field names like <code>is_admin</code>. Running a strong Whisper model on-device keeps those intact, costs nothing per run, and keeps the raw recording private. The only paid call in the whole pipeline is the single Claude draft.</p>
+    </div>
+
+    <div class="prose">
+      <h3>Structure is the template's job, not the model's</h3>
+      <p>The riskiest part of letting a model publish is that it drifts — different headings, different markup, a broken layout on a bad day. This pipeline removes that freedom. The model returns content as constrained JSON; a fixed template owns every tag and every style rule. The result is consistency by construction: the model can write a better or worse <em>writeup</em>, but it can't produce a worse-looking <em>page</em>.</p>
+
+      <h3>Publishing is a read-modify-write, not an overwrite</h3>
+      <p>Adding a writeup means two commits: a brand-new page, and a surgical edit to the index. The index update fetches the current file and its version hash, inserts a single row at a fixed marker, increments the count, and writes it back with that hash attached. The hash is what makes it safe — GitHub rejects the write if the file changed underneath it, so the index can never be silently clobbered.</p>
+    </div>
+
+    <div class="code">
+      <div class="code-bar">the publish call, in essence</div>
+<pre>PUT /repos/&lt;user&gt;/&lt;user&gt;.github.io/contents/writeups/&lt;slug&gt;.html
+{
+  "message": "Add &lt;machine&gt; writeup",
+  "content": "&lt;base64 of the rendered page&gt;",
+  "branch":  "main"
+}
+<span class="c"># the index gets the same treatment, but with the current</span>
+<span class="c"># file hash attached so the edit can't overwrite a stale copy</span></pre>
+    </div>
+
+    <div class="prose">
+      <h3>Always-on, without a fragile setup</h3>
+      <p>The whole thing runs in a container with a restart policy, so it survives crashes and reboots on its own. Two volumes persist across rebuilds: the Whisper model cache, so the 1.6&nbsp;GB download happens once, and an archive folder that keeps every raw transcript and finished page — a durable record even if a later step ever fails.</p>
+    </div>
+  </section>
+
+  <!-- ===== APPLIED USES ===== -->
+  <section class="section">
+    <h2>Applied uses</h2>
+    <p class="lead">The security writeup is one instance of a general pattern: speak a structured thing, get a published, consistently formatted artifact — with no manual formatting step in between.</p>
+
+    <div class="prose">
+      <ul>
+        <li><strong>Call and meeting debriefs.</strong> Talk through a call on the walk back to your desk; get a structured summary committed to a shared repo or wiki, formatted the same way every time.</li>
+        <li><strong>Field and inspection reports.</strong> Dictate observations on site; get a formatted report with fixed sections, ready to file — useful anywhere the person doing the work isn't at a keyboard.</li>
+        <li><strong>Release notes and changelogs.</strong> Describe what shipped right after a deploy; get a clean, consistent entry appended to the log automatically.</li>
+        <li><strong>Reading and research notes.</strong> Narrate what you took from a paper or a session; grow a structured, searchable knowledge base without stopping to format anything.</li>
+      </ul>
+      <p>The reusable core is the same in every case: <strong>private, local transcription</strong>, an <strong>LLM constrained by a template</strong> so output stays uniform, and <strong>git-based publishing</strong> that leaves a full history — with a review gate dropped in whenever a draft shouldn't go straight to live.</p>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-foot">
+  <div class="inner">
+    <span>© 2026 Khalil Gueye — Raleigh, NC</span>
+    <span class="links">
+      <a href="https://github.com/khalilsgueye" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://youtube.com/@khalilgueye10" target="_blank" rel="noopener">YouTube</a>
+      <a href="https://twitter.com/khalilgueye10" target="_blank" rel="noopener">X</a>
+    </span>
+  </div>
+</footer>
+
+</body>
+</html>
