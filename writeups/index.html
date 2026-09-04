@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Writeups — Khalil Gueye</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Serif:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #FFFFFF;
+    --bg-raise: #F4F6F9;
+    --panel: #FFFFFF;
+    --panel-border: #D5DCE5;
+    --text: #0B1F3A;
+    --text-dim: #4A5A70;
+    --text-faint: #8A97A8;
+    --accent: #1F4E79;
+    --accent-dim: #5A7CA0;
+    --mono: 'IBM Plex Mono', ui-monospace, 'SF Mono', Consolas, monospace;
+    --sans: 'IBM Plex Sans', -apple-system, sans-serif;
+    --serif: 'IBM Plex Serif', Georgia, serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body{
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    line-height: 1.6;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  a { color: inherit; text-decoration: none; }
+  ::selection { background: var(--accent); color: #fff; }
+  :focus-visible{ outline: 2px solid var(--accent); outline-offset: 3px; }
+
+  .wrap{ max-width: 1020px; margin: 0 auto; padding: 0 32px; }
+
+  /* ---------- HEADER ---------- */
+  .site-head{
+    border-bottom: 1px solid var(--panel-border);
+    position: sticky; top: 0;
+    background: rgba(255,255,255,0.9);
+    backdrop-filter: blur(8px);
+    z-index: 50;
+  }
+  .site-head .inner{
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 20px 0;
+  }
+  .brand{
+    display: flex; align-items: center; gap: 11px;
+    font-family: var(--sans); font-weight: 600; font-size: 15px;
+    letter-spacing: 0.01em; color: var(--text);
+  }
+  .brand .mark{
+    width: 12px; height: 12px; background: var(--accent);
+    flex-shrink: 0; border-radius: 1px;
+  }
+  .site-nav{ display: flex; gap: 30px; }
+  .site-nav a{
+    font-size: 14.5px; color: var(--text-dim); font-weight: 500;
+    transition: color 0.15s ease;
+  }
+  .site-nav a:hover{ color: var(--accent); }
+  .site-nav a.current{ color: var(--text); }
+
+  /* ---------- PAGE HEAD ---------- */
+  .page-head{ padding: 72px 0 34px; }
+  .page-head h1{
+    font-family: var(--serif); font-weight: 600;
+    font-size: clamp(38px, 5.5vw, 56px); letter-spacing: -0.02em;
+    line-height: 1.03; color: var(--text);
+  }
+  .page-head .sub{
+    margin-top: 18px; font-size: 16.5px; line-height: 1.7;
+    color: var(--text-dim); max-width: 58ch;
+  }
+  .page-head .count{
+    margin-top: 24px; font-family: var(--mono); font-size: 13px;
+    color: var(--text-faint); letter-spacing: 0.02em;
+  }
+
+  /* ---------- WRITEUP LIST ---------- */
+  .wu-list{ border-top: 1px solid var(--panel-border); padding-bottom: 96px; }
+  .wu-row{
+    display: block; padding: 24px 16px;
+    border-bottom: 1px solid var(--panel-border);
+    transition: background 0.15s ease;
+  }
+  .wu-row:hover{ background: var(--bg-raise); }
+  .wu-name{
+    font-family: var(--serif); font-weight: 600; font-size: 21px;
+    letter-spacing: -0.01em; color: var(--text);
+    transition: color 0.15s ease;
+  }
+  .wu-row:hover .wu-name{ color: var(--accent); }
+  .wu-desc{
+    margin-top: 6px; font-size: 14px; line-height: 1.55;
+    color: var(--text-dim); max-width: 66ch;
+  }
+  .wu-tags{ margin-top: 13px; display: flex; flex-wrap: wrap; gap: 7px; }
+  .wu-tag{
+    font-family: var(--mono); font-size: 11px; letter-spacing: 0.02em;
+    color: var(--accent); background: #EEF3F9; border: 1px solid #BCD0E4;
+    padding: 3px 10px; border-radius: 2px;
+  }
+
+  @media (max-width: 640px){
+    .page-head{ padding: 52px 0 28px; }
+  }
+
+  /* ---------- FOOTER ---------- */
+  .site-foot{
+    border-top: 1px solid var(--panel-border);
+    padding: 28px 0 44px;
+  }
+  .site-foot .inner{
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 14px;
+    font-size: 13.5px; color: var(--text-faint);
+  }
+  .site-foot a{ color: var(--text-dim); font-weight: 500; }
+  .site-foot a:hover{ color: var(--accent); }
+  .site-foot .links{ display: flex; gap: 22px; }
+</style>
+</head>
+<body>
+
+<header class="site-head">
+  <div class="wrap inner">
+    <a href="../index.html" class="brand"><span class="mark"></span>Khalil Gueye</a>
+    <nav class="site-nav">
+      <a href="index.html" class="current">Writeups</a>
+      <a href="../portfolio/">Portfolio</a>
+      <a href="../videos/">Videos</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="page-head">
+    <h1>Writeups</h1>
+    <p class="sub">Hack The Box and CTF case studies — how a machine goes from an anonymous starting point to full compromise, and where a defender catches each step. Published only after a machine retires.</p>
+    <p class="count"><!-- COUNT -->1<!-- /COUNT --> published</p>
+  </section>
+
+  <section class="wu-list">
+    <!--
+      TEMPLATE — the bot inserts each new row directly above the marker below.
+      <a href="machine-slug.html" class="wu-row">
+        <div class="wu-name">Machine Name</div>
+        <div class="wu-desc">Short one-line description of the box.</div>
+        <div class="wu-tags">
+          <span class="wu-tag">Category</span>
+          <span class="wu-tag">Another</span>
+        </div>
+      </a>
+    -->
+
+    <!-- NEW-WRITEUP-HERE -->
+
+    <a href="2million.html" class="wu-row">
+      <div class="wu-name">2Million</div>
+      <div class="wu-desc">Linux · five individually minor flaws chained from anonymous web access to root, with the detection and remediation for each.</div>
+      <div class="wu-tags">
+        <span class="wu-tag">API Security</span>
+        <span class="wu-tag">Web Exploitation</span>
+        <span class="wu-tag">Privilege Escalation</span>
+      </div>
+    </a>
+
+  </section>
+</main>
+
+<footer class="site-foot">
+  <div class="wrap inner">
+    <span>© 2026 Khalil Gueye — Raleigh, NC</span>
+    <span class="links">
+      <a href="https://github.com/khalilsgueye" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://youtube.com/@khalilgueye10" target="_blank" rel="noopener">YouTube</a>
+      <a href="https://twitter.com/khalilgueye10" target="_blank" rel="noopener">X</a>
+    </span>
+  </div>
+</footer>
+
+</body>
+</html>
