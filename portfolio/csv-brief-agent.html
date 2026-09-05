@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CSV Brief Agent — Portfolio — Khalil Gueye</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Serif:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #FFFFFF;
+    --bg-raise: #F4F6F9;
+    --panel: #FFFFFF;
+    --panel-border: #D5DCE5;
+    --text: #0B1F3A;
+    --text-dim: #4A5A70;
+    --text-faint: #8A97A8;
+    --accent: #1F4E79;
+    --accent-dim: #5A7CA0;
+    --mono: 'IBM Plex Mono', ui-monospace, 'SF Mono', Consolas, monospace;
+    --sans: 'IBM Plex Sans', -apple-system, sans-serif;
+    --serif: 'IBM Plex Serif', Georgia, serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body{
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    line-height: 1.6;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  a { color: inherit; text-decoration: none; }
+  ::selection { background: var(--accent); color: #fff; }
+  :focus-visible{ outline: 2px solid var(--accent); outline-offset: 3px; }
+
+  .wrap{ max-width: 780px; margin: 0 auto; padding: 0 32px; }
+
+  /* ---------- HEADER ---------- */
+  .site-head{
+    border-bottom: 1px solid var(--panel-border);
+    position: sticky; top: 0;
+    background: rgba(255,255,255,0.9);
+    backdrop-filter: blur(8px);
+    z-index: 50;
+  }
+  .site-head .inner{
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 20px 0; max-width: 1020px; margin: 0 auto; padding-left: 32px; padding-right: 32px;
+  }
+  .brand{
+    display: flex; align-items: center; gap: 11px;
+    font-weight: 600; font-size: 15px; letter-spacing: 0.01em; color: var(--text);
+  }
+  .brand .mark{ width: 12px; height: 12px; background: var(--accent); flex-shrink: 0; border-radius: 1px; }
+  .site-nav{ display: flex; gap: 30px; }
+  .site-nav a{ font-size: 14.5px; color: var(--text-dim); font-weight: 500; transition: color 0.15s ease; }
+  .site-nav a:hover{ color: var(--accent); }
+  .site-nav a.current{ color: var(--text); }
+
+  /* ---------- HERO (airy, plain-language) ---------- */
+  .hero{ padding: 60px 0 52px; }
+  .back{
+    font-family: var(--mono); font-size: 12.5px; color: var(--text-faint);
+    display: inline-block; margin-bottom: 30px; transition: color 0.15s ease;
+  }
+  .back:hover{ color: var(--accent); }
+  .hero h1{
+    font-family: var(--serif); font-weight: 600;
+    font-size: clamp(40px, 6vw, 60px); letter-spacing: -0.02em;
+    line-height: 1.03; color: var(--text);
+  }
+  .hero .summary{
+    margin-top: 26px; font-size: 17px; line-height: 1.75;
+    color: var(--text-dim); max-width: 62ch;
+  }
+  .hero .tags{ margin-top: 26px; display: flex; flex-wrap: wrap; gap: 7px; }
+  .hero .tag{
+    font-family: var(--mono); font-size: 11px; letter-spacing: 0.02em;
+    color: var(--accent); background: #EEF3F9; border: 1px solid #BCD0E4;
+    padding: 3px 10px; border-radius: 2px;
+  }
+
+  /* ---------- SECTIONS ---------- */
+  .section{ padding: 52px 0; border-top: 1px solid var(--panel-border); }
+  .section h2{
+    font-family: var(--serif); font-weight: 600;
+    font-size: clamp(28px, 4vw, 36px); letter-spacing: -0.01em; color: var(--text);
+  }
+  .section .lead{
+    margin-top: 12px; font-size: 16px; line-height: 1.7;
+    color: var(--text-dim); max-width: 62ch;
+  }
+
+  /* pipeline (a genuine sequence, so numbered) */
+  .steps{ margin-top: 30px; }
+  .step{
+    display: grid; grid-template-columns: 42px 1fr; gap: 20px;
+    padding: 22px 0; border-bottom: 1px solid var(--panel-border);
+  }
+  .step:last-child{ border-bottom: none; }
+  .step .n{ font-family: var(--mono); font-size: 14px; font-weight: 600; color: var(--accent); padding-top: 2px; }
+  .step h3{ font-size: 16.5px; font-weight: 600; color: var(--text); margin-bottom: 6px; }
+  .step p{ font-size: 14.5px; color: var(--text-dim); line-height: 1.65; }
+  .step code{ font-family: var(--mono); font-size: 0.86em; color: var(--accent); background: var(--bg-raise); border: 1px solid var(--panel-border); border-radius: 3px; padding: 1px 5px; }
+
+  /* prose */
+  .prose{ margin-top: 20px; }
+  .prose p{ font-size: 16px; color: var(--text-dim); line-height: 1.72; margin-bottom: 16px; max-width: 64ch; }
+  .prose p strong{ color: var(--text); font-weight: 600; }
+  .prose ul{ margin: 0 0 18px; padding-left: 0; list-style: none; max-width: 64ch; }
+  .prose li{ font-size: 15.5px; color: var(--text-dim); padding-left: 22px; position: relative; margin-bottom: 11px; line-height: 1.62; }
+  .prose li::before{ content: '—'; color: var(--accent-dim); position: absolute; left: 0; }
+  .prose li strong{ color: var(--text); font-weight: 600; }
+  .prose code{ font-family: var(--mono); font-size: 0.88em; background: var(--bg-raise); border: 1px solid var(--panel-border); border-radius: 3px; padding: 1px 5px; color: var(--accent); }
+
+  /* code block */
+  .code{ background: var(--bg-raise); border: 1px solid var(--panel-border); border-radius: 4px; margin: 22px 0; overflow: hidden; }
+  .code-bar{ padding: 8px 14px; border-bottom: 1px solid var(--panel-border); font-family: var(--mono); font-size: 11px; letter-spacing: 0.04em; color: var(--text-faint); }
+  .code pre{ margin: 0; padding: 14px 16px; overflow-x: auto; font-family: var(--mono); font-size: 13px; line-height: 1.55; color: var(--text); }
+  .code .c{ color: var(--text-faint); }
+
+  /* mechanism note */
+  .note{ border-left: 3px solid var(--accent); background: #EEF3F9; padding: 15px 18px; border-radius: 0 4px 4px 0; margin: 22px 0; }
+  .note .lbl{ font-family: var(--mono); font-size: 11px; letter-spacing: 0.03em; color: var(--accent); font-weight: 600; display: block; margin-bottom: 6px; }
+  .note p{ margin: 0; font-size: 15px; line-height: 1.65; color: var(--text-dim); max-width: 62ch; }
+  .note p strong{ color: var(--text); }
+
+  /* ---------- FOOTER ---------- */
+  .site-foot{ border-top: 1px solid var(--panel-border); padding: 28px 0 44px; margin-top: 40px; }
+  .site-foot .inner{ display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 14px; font-size: 13.5px; color: var(--text-faint); max-width: 1020px; margin: 0 auto; padding: 0 32px; }
+  .site-foot a{ color: var(--text-dim); font-weight: 500; }
+  .site-foot a:hover{ color: var(--accent); }
+  .site-foot .links{ display: flex; gap: 22px; }
+
+  @media (max-width: 640px){
+    .hero{ padding: 44px 0 40px; }
+    .section{ padding: 44px 0; }
+  }
+</style>
+</head>
+<body>
+
+<header class="site-head">
+  <div class="inner">
+    <a href="../index.html" class="brand"><span class="mark"></span>Khalil Gueye</a>
+    <nav class="site-nav">
+      <a href="../writeups/">Writeups</a>
+      <a href="index.html" class="current">Portfolio</a>
+      <a href="../videos/">Videos</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- ===== HERO — plain language, what it is ===== -->
+  <section class="hero">
+    <a href="index.html" class="back">← Portfolio</a>
+    <h1>CSV Brief Agent</h1>
+    <p class="summary">This agent reads a raw CSV data set and automatically produces a written briefing summarizing what's in it and what matters most. It's built for consultants and analysts who need to understand a new data set fast, without manually poking through it column by column.</p>
+    <div class="tags">
+      <span class="tag">Python</span>
+      <span class="tag">LLM Tool Calling</span>
+      <span class="tag">CSV</span>
+      <span class="tag">Agent Loop</span>
+    </div>
+  </section>
+
+  <!-- ===== HOW IT WORKS — the intricacies ===== -->
+  <section class="section">
+    <h2>How it works</h2>
+<p class="lead">The agent doesn't read the data set directly — it lets an LLM decide which analysis tools to run on it, one step at a time, until it has enough to write a briefing.</p><div class="steps"><div class="step"><div class="n">01</div><div><h3>Ingest the data set</h3><p>The CSV is loaded into memory by the Python script, which also exposes a set of tools the LLM can call — things like summary statistics, column breakdowns, and other data analysis functions.</p></div></div><div class="step"><div class="n">02</div><div><h3>Ask the LLM what to do first</h3><p>The Python script queries the LLM with the current state of the investigation and asks it to pick a tool to run next.</p></div></div><div class="step"><div class="n">03</div><div><h3>Run the chosen tool</h3><p>The script sees which tool the LLM picked, runs it against the actual data set, and retrieves the output — without ever loading the full data set into the LLM's context.</p></div></div><div class="step"><div class="n">04</div><div><h3>Loop with accumulated context</h3><p>The tool's output is appended to the conversation history, along with every prior query and response, and the loop repeats: the LLM sees everything learned so far and picks the next tool to run.</p></div></div><div class="step"><div class="n">05</div><div><h3>Synthesize the briefing report</h3><p>Once enough tool calls have been made, all the accumulated outputs are combined and given to the LLM to write a final report summarizing the data set and its key takeaways.</p></div></div></div><div class="note"><span class="lbl">Why tools instead of raw data</span><p>Feeding an entire data set into an LLM's context would be slow and, at scale, often <strong>not possible</strong>. By having the LLM choose from a fixed set of analysis tools instead, the actual computation happens in Python against the data set directly, and only the results — not the raw data — ever enter the LLM's context.</p></div>
+  </section>
+
+  <!-- ===== APPLIED USES ===== -->
+  <section class="section">
+    <h2>Applied uses</h2>
+<div class="prose"><p class="lead">This is a general pattern for letting an LLM reason over something too large to fit in its context, by giving it tools instead of raw data.</p><ul><li><strong>Data analyst reports.</strong> Turning any new CSV or spreadsheet hand-off into an instant written briefing instead of manual exploration.</li><li><strong>Log or database investigation.</strong> The same tool-calling loop could query a database or log store, letting the LLM decide which queries to run based on what it's already found.</li><li><strong>Business intelligence summaries.</strong> Recurring reports over sales, usage, or operations data where the underlying tables change but the tool set stays the same.</li><li><strong>Document set triage.</strong> Applying the same iterative pick-a-tool, read-the-result, decide-again loop to large document collections instead of tabular data.</li></ul><p>The reusable core is the loop itself: the LLM only ever sees tool outputs and its own prior reasoning, never the full underlying source, which is what makes the pattern scale to data too large to read in one pass.</p></div>
+  </section>
+
+</main>
+
+<footer class="site-foot">
+  <div class="inner">
+    <span>© 2026 Khalil Gueye — Raleigh, NC</span>
+    <span class="links">
+      <a href="https://github.com/khalilsgueye" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://youtube.com/@khalilgueye10" target="_blank" rel="noopener">YouTube</a>
+      <a href="https://twitter.com/khalilgueye10" target="_blank" rel="noopener">X</a>
+    </span>
+  </div>
+</footer>
+
+</body>
+</html>
