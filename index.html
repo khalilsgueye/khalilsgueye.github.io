@@ -99,7 +99,7 @@
   /* ---------- DIRECTORY ---------- */
   .directory{ padding: 0 0 96px; }
   .dir-grid{
-    display: grid; grid-template-columns: repeat(3, 1fr);
+    display: grid; grid-template-columns: repeat(4, 1fr);
     border: 1px solid var(--panel-border); border-radius: 2px;
     overflow: hidden;
   }
@@ -133,6 +133,12 @@
   }
   .dir-col:hover .go span{ border-color: var(--accent); }
 
+  @media (max-width: 900px){
+    .dir-grid{ grid-template-columns: repeat(2, 1fr); }
+    .dir-col:nth-child(odd){ border-left: none; }
+    .dir-col:nth-child(n+3){ border-top: 1px solid var(--panel-border); }
+  }
+
   @media (max-width: 720px){
     .dir-grid{ grid-template-columns: 1fr; }
     .dir-col{ border-left: none; border-top: 1px solid var(--panel-border); min-height: 0; }
@@ -160,13 +166,10 @@
 <header class="site-head">
   <div class="wrap inner">
     <a href="index.html" class="brand"><span class="mark"></span>Khalil Gueye</a>
-    <nav class="site-nav">
-      <a href="writeups/">Writeups</a>
-      <a href="portfolio/">Portfolio</a>
-      <a href="videos/">Videos</a>
-    </nav>
+    <div id="nav" data-current=""></div>
   </div>
 </header>
+<script src="nav.js"></script>
 
 <main class="wrap">
   <section class="hero">
@@ -188,6 +191,12 @@
         <h2>Portfolio</h2>
         <p>AI agents and automation I've designed and shipped — from voice-driven publishing pipelines to data-analysis tooling that keeps computation out of the model.</p>
         <div class="go"><span>View portfolio</span></div>
+      </a>
+
+      <a href="blog/" class="dir-col">
+        <h2>Blog</h2>
+        <p>Notes on security research and applied AI as they happen — shorter and less structured than a full writeup or portfolio entry.</p>
+        <div class="go"><span>Read the blog</span></div>
       </a>
 
       <a href="videos/" class="dir-col">

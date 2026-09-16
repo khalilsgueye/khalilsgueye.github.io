@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Portfolio — Khalil Gueye</title>
+<title>Blog — Khalil Gueye</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Serif:wght@400;500;600&display=swap" rel="stylesheet">
@@ -79,14 +79,14 @@
   }
   .page-head .sub{
     margin-top: 18px; font-size: 16.5px; line-height: 1.7;
-    color: var(--text-dim); max-width: 60ch;
+    color: var(--text-dim); max-width: 58ch;
   }
   .page-head .count{
     margin-top: 24px; font-family: var(--mono); font-size: 13px;
     color: var(--text-faint); letter-spacing: 0.02em;
   }
 
-  /* ---------- ITEM LIST (shared shape with writeups) ---------- */
+  /* ---------- POST LIST (shared shape with writeups/portfolio) ---------- */
   .wu-list{ border-top: 1px solid var(--panel-border); padding-bottom: 96px; }
   .wu-row{
     display: block; padding: 24px 16px;
@@ -102,7 +102,7 @@
   .wu-row:hover .wu-name{ color: var(--accent); }
   .wu-desc{
     margin-top: 6px; font-size: 14px; line-height: 1.55;
-    color: var(--text-dim); max-width: 70ch;
+    color: var(--text-dim); max-width: 66ch;
   }
   .wu-tags{ margin-top: 13px; display: flex; flex-wrap: wrap; gap: 7px; }
   .wu-tag{
@@ -135,67 +135,32 @@
 <header class="site-head">
   <div class="wrap inner">
     <a href="../index.html" class="brand"><span class="mark"></span>Khalil Gueye</a>
-    <div id="nav" data-current="portfolio"></div>
+    <div id="nav" data-current="blog"></div>
   </div>
 </header>
 <script src="../nav.js"></script>
 
 <main class="wrap">
   <section class="page-head">
-    <h1>Portfolio</h1>
-    <p class="sub">Agents and automation I've designed and shipped — each built to do real work, with the reach of what it can touch scoped deliberately and its failure behaviour defined up front. Below, what each one is and how it's put together.</p>
-    <p class="count"><!-- COUNT -->3<!-- /COUNT --> projects</p>
+    <h1>Blog</h1>
+    <p class="sub">Shorter notes on security research and applied AI, published as they happen — less structured than a full writeup or portfolio entry.</p>
+    <p class="count"><!-- COUNT -->0<!-- /COUNT --> posts</p>
   </section>
 
   <section class="wu-list">
     <!--
       TEMPLATE — the publishing agent inserts each new row directly above the marker below.
-      <a href="agent-slug.html" class="wu-row">
-        <div class="wu-name">Agent Name</div>
-        <div class="wu-desc">Short one-line description of what it does.</div>
+      <a href="post-slug.html" class="wu-row">
+        <div class="wu-name">Post Title</div>
+        <div class="wu-desc">Short one-line description of the post.</div>
         <div class="wu-tags">
-          <span class="wu-tag">Tech</span>
+          <span class="wu-tag">Topic</span>
           <span class="wu-tag">Another</span>
         </div>
       </a>
     -->
 
     <!-- NEW-WRITEUP-HERE -->
-
-    <a href="htb-writeup-bot.html" class="wu-row">
-      <div class="wu-name">HTB Writeup Bot</div>
-      <div class="wu-desc">A voice note becomes a published case study. Telegram audio is transcribed locally with Whisper, drafted into a structured writeup by Claude, and committed straight to this site — the pipeline that publishes the Writeups section.</div>
-      <div class="wu-tags">
-        <span class="wu-tag">Python</span>
-        <span class="wu-tag">Whisper</span>
-        <span class="wu-tag">Claude API</span>
-        <span class="wu-tag">Telegram</span>
-        <span class="wu-tag">GitHub API</span>
-        <span class="wu-tag">Docker</span>
-      </div>
-    </a>
-
-    <a href="csv-brief-agent.html" class="wu-row">
-      <div class="wu-name">CSV Brief Agent</div>
-      <div class="wu-desc">A tool-calling agent that answers questions about a dataset by running real pandas computations rather than reasoning over pasted rows — keeping the data out of the model's context so the numbers are exact, not guessed.</div>
-      <div class="wu-tags">
-        <span class="wu-tag">Python</span>
-        <span class="wu-tag">pandas</span>
-        <span class="wu-tag">Tool Use</span>
-        <span class="wu-tag">Claude API</span>
-      </div>
-    </a>
-
-    <a href="idea-ping-agent.html" class="wu-row">
-      <div class="wu-name">Idea Ping Agent</div>
-      <div class="wu-desc">A web form to inbox pipeline: submissions land in Postgres, a local Llama model drafts a response, and it goes out over email — three decoupled services that coordinate only through the database, so a crash in one never takes down the others.</div>
-      <div class="wu-tags">
-        <span class="wu-tag">FastAPI</span>
-        <span class="wu-tag">Postgres</span>
-        <span class="wu-tag">Ollama</span>
-        <span class="wu-tag">APScheduler</span>
-      </div>
-    </a>
 
   </section>
 </main>
