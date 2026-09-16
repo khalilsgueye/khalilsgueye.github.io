@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Docker Content Publisher — Portfolio — Khalil Gueye</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Serif:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#FFFFFF;--bg-raise:#F4F6F9;--panel:#FFFFFF;--panel-border:#D5DCE5;--text:#0B1F3A;--text-dim:#4A5A70;--text-faint:#8A97A8;--accent:#1F4E79;--accent-dim:#5A7CA0;--mono:'IBM Plex Mono',ui-monospace,'SF Mono',Consolas,monospace;--sans:'IBM Plex Sans',-apple-system,sans-serif;--serif:'IBM Plex Serif',Georgia,serif;}
+  *{box-sizing:border-box;margin:0;padding:0;} html{scroll-behavior:smooth;}
+  body{background:var(--bg);color:var(--text);font-family:var(--sans);line-height:1.6;min-height:100vh;-webkit-font-smoothing:antialiased;}
+  a{color:inherit;text-decoration:none;} ::selection{background:var(--accent);color:#fff;} :focus-visible{outline:2px solid var(--accent);outline-offset:3px;}
+  .wrap{max-width:780px;margin:0 auto;padding:0 32px;}
+  .site-head{border-bottom:1px solid var(--panel-border);position:sticky;top:0;background:rgba(255,255,255,0.9);backdrop-filter:blur(8px);z-index:50;}
+  .site-head .inner{display:flex;align-items:center;justify-content:space-between;padding:20px 0;max-width:1020px;margin:0 auto;padding-left:32px;padding-right:32px;}
+  .brand{display:flex;align-items:center;gap:11px;font-weight:600;font-size:15px;letter-spacing:0.01em;color:var(--text);}
+  .brand .mark{width:12px;height:12px;background:var(--accent);flex-shrink:0;border-radius:1px;}
+  .hero{padding:60px 0 52px;}
+  .back{font-family:var(--mono);font-size:12.5px;color:var(--text-faint);display:inline-block;margin-bottom:30px;transition:color 0.15s ease;}
+  .back:hover{color:var(--accent);}
+  .hero h1{font-family:var(--serif);font-weight:600;font-size:clamp(40px,6vw,60px);letter-spacing:-0.02em;line-height:1.03;color:var(--text);}
+  .hero .summary{margin-top:26px;font-size:17px;line-height:1.75;color:var(--text-dim);max-width:62ch;}
+  .hero .tags{margin-top:26px;display:flex;flex-wrap:wrap;gap:7px;}
+  .hero .tag{font-family:var(--mono);font-size:11px;letter-spacing:0.02em;color:var(--accent);background:#EEF3F9;border:1px solid #BCD0E4;padding:3px 10px;border-radius:2px;}
+  .section{padding:52px 0;border-top:1px solid var(--panel-border);}
+  .section h2{font-family:var(--serif);font-weight:600;font-size:clamp(28px,4vw,36px);letter-spacing:-0.01em;color:var(--text);}
+  .section .lead{margin-top:12px;font-size:16px;line-height:1.7;color:var(--text-dim);max-width:62ch;}
+  .steps{margin-top:30px;}
+  .step{display:grid;grid-template-columns:42px 1fr;gap:20px;padding:22px 0;border-bottom:1px solid var(--panel-border);}
+  .step:last-child{border-bottom:none;}
+  .step .n{font-family:var(--mono);font-size:14px;font-weight:600;color:var(--accent);padding-top:2px;}
+  .step h3{font-size:16.5px;font-weight:600;color:var(--text);margin-bottom:6px;}
+  .step p{font-size:14.5px;color:var(--text-dim);line-height:1.65;}
+  .prose{margin-top:20px;}
+  .prose p{font-size:16px;color:var(--text-dim);line-height:1.72;margin-bottom:16px;max-width:64ch;}
+  .prose p strong{color:var(--text);font-weight:600;}
+  .prose ul{margin:0 0 18px;padding-left:0;list-style:none;max-width:64ch;}
+  .prose li{font-size:15.5px;color:var(--text-dim);padding-left:22px;position:relative;margin-bottom:11px;line-height:1.62;}
+  .prose li::before{content:'—';color:var(--accent-dim);position:absolute;left:0;}
+  .prose li strong{color:var(--text);font-weight:600;}
+  .site-foot{border-top:1px solid var(--panel-border);padding:28px 0 44px;margin-top:40px;}
+  .site-foot .inner{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px;font-size:13.5px;color:var(--text-faint);max-width:1020px;margin:0 auto;padding:0 32px;}
+  .site-foot a{color:var(--text-dim);font-weight:500;} .site-foot a:hover{color:var(--accent);}
+  .site-foot .links{display:flex;gap:22px;}
+  @media (max-width:640px){.hero{padding:44px 0 40px;} .section{padding:44px 0;}}
+</style>
+</head>
+<body>
+<header class="site-head">
+  <div class="inner">
+    <a href="../index.html" class="brand"><span class="mark"></span>Khalil Gueye</a>
+    <div id="nav" data-current="portfolio"></div>
+  </div>
+</header>
+<script src="../nav.js"></script>
+<main class="wrap">
+  <section class="hero">
+    <a href="index.html" class="back">← Portfolio</a>
+    <h1>Docker Content Publisher</h1>
+    <p class="summary">An automated pipeline that turns raw text notes into fully formatted, published pages on my portfolio site — no manual HTML or copy-pasting required.</p>
+    <div class="tags"><span class="tag">Python</span><span class="tag">Anthropic API</span><span class="tag">GitHub REST API</span><span class="tag">Docker</span><span class="tag">Automation</span></div>
+  </section>
+  <section class="section">
+    <h2>How it works</h2>
+    <div class="steps"><div class="step"><div class="n">01</div><div><h3>Watch the inbox</h3><p>The agent scans a designated inbox folder for new text files, each one representing a piece of content to publish.</p></div></div><div class="step"><div class="n">02</div><div><h3>Detect content type</h3><p>A filename prefix — blog, writeup, or portfolio — tells the agent what kind of content it is and which part of the site it belongs on.</p></div></div><div class="step"><div class="n">03</div><div><h3>Clean and structure with Claude</h3><p>The raw text is sent to Claude along with a type-specific prompt that rewrites the content and structures it into a title, summary, tags, and body.</p></div></div><div class="step"><div class="n">04</div><div><h3>Generate a matching HTML page</h3><p>The structured output is used to build a full HTML page that follows the site's existing design system, so new content looks native to the site.</p></div></div><div class="step"><div class="n">05</div><div><h3>Publish directly to GitHub</h3><p>The new page and an updated listing/index page are committed straight to the GitHub repo using the Contents API — no manual edits.</p></div></div><div class="step"><div class="n">06</div><div><h3>Handle failures gracefully</h3><p>If a file fails due to bad formatting or an API error, it stays in the inbox for the next run while the rest of the batch still processes and successfully published files move to a processed subfolder.</p></div></div></div>
+  </section>
+  <section class="section">
+    <h2>Applied uses</h2>
+    <div class="prose"><p class="lead">This project removes the tedious part of publishing: turning a rough note into a polished, live web page.</p><ul><li><strong>Personal blogging pipeline.</strong> Drop a text file in a folder and have it appear as a fully formatted blog post without touching HTML.</li><li><strong>Portfolio maintenance.</strong> Add new project writeups or portfolio entries without manually editing index pages or matching site styling by hand.</li><li><strong>Batch content processing.</strong> Multiple files can be processed in one run, with failures isolated so one bad file doesn't block everything else.</li><li><strong>Path to full automation.</strong> Being containerized with Docker means this can eventually run on a schedule or trigger, publishing content unattended.</li></ul></div>
+  </section>
+</main>
+<footer class="site-foot">
+  <div class="inner">
+    <span>© 2026 Khalil Gueye — Raleigh, NC</span>
+    <span class="links">
+      <a href="https://github.com/khalilsgueye" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://youtube.com/@khalilgueye10" target="_blank" rel="noopener">YouTube</a>
+      <a href="https://twitter.com/khalilgueye10" target="_blank" rel="noopener">X</a>
+    </span>
+  </div>
+</footer>
+</body>
+</html>
