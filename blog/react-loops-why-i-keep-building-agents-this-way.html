@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ReAct Loops: Why I Keep Building Agents This Way — Blog — Khalil Gueye</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Serif:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#FFFFFF;--bg-raise:#F4F6F9;--panel:#FFFFFF;--panel-border:#D5DCE5;--text:#0B1F3A;--text-dim:#4A5A70;--text-faint:#8A97A8;--accent:#1F4E79;--accent-dim:#5A7CA0;--mono:'IBM Plex Mono',ui-monospace,'SF Mono',Consolas,monospace;--sans:'IBM Plex Sans',-apple-system,sans-serif;--serif:'IBM Plex Serif',Georgia,serif;}
+  *{box-sizing:border-box;margin:0;padding:0;} html{scroll-behavior:smooth;}
+  body{background:var(--bg);color:var(--text);font-family:var(--sans);line-height:1.6;min-height:100vh;-webkit-font-smoothing:antialiased;}
+  a{color:inherit;text-decoration:none;} ::selection{background:var(--accent);color:#fff;} :focus-visible{outline:2px solid var(--accent);outline-offset:3px;}
+  .wrap{max-width:780px;margin:0 auto;padding:0 32px;}
+  .site-head{border-bottom:1px solid var(--panel-border);position:sticky;top:0;background:rgba(255,255,255,0.9);backdrop-filter:blur(8px);z-index:50;}
+  .site-head .inner{display:flex;align-items:center;justify-content:space-between;padding:20px 0;max-width:1020px;margin:0 auto;padding-left:32px;padding-right:32px;}
+  .brand{display:flex;align-items:center;gap:11px;font-weight:600;font-size:15px;letter-spacing:0.01em;color:var(--text);}
+  .brand .mark{width:12px;height:12px;background:var(--accent);flex-shrink:0;border-radius:1px;}
+  .hero{padding:60px 0 52px;}
+  .back{font-family:var(--mono);font-size:12.5px;color:var(--text-faint);display:inline-block;margin-bottom:30px;transition:color 0.15s ease;}
+  .back:hover{color:var(--accent);}
+  .hero h1{font-family:var(--serif);font-weight:600;font-size:clamp(40px,6vw,60px);letter-spacing:-0.02em;line-height:1.03;color:var(--text);}
+  .hero .summary{margin-top:26px;font-size:17px;line-height:1.75;color:var(--text-dim);max-width:62ch;}
+  .hero .tags{margin-top:26px;display:flex;flex-wrap:wrap;gap:7px;}
+  .hero .tag{font-family:var(--mono);font-size:11px;letter-spacing:0.02em;color:var(--accent);background:#EEF3F9;border:1px solid #BCD0E4;padding:3px 10px;border-radius:2px;}
+  .section{padding:52px 0;border-top:1px solid var(--panel-border);}
+  .section h2{font-family:var(--serif);font-weight:600;font-size:clamp(28px,4vw,36px);letter-spacing:-0.01em;color:var(--text);}
+  .section .lead{margin-top:12px;font-size:16px;line-height:1.7;color:var(--text-dim);max-width:62ch;}
+  .steps{margin-top:30px;}
+  .step{display:grid;grid-template-columns:42px 1fr;gap:20px;padding:22px 0;border-bottom:1px solid var(--panel-border);}
+  .step:last-child{border-bottom:none;}
+  .step .n{font-family:var(--mono);font-size:14px;font-weight:600;color:var(--accent);padding-top:2px;}
+  .step h3{font-size:16.5px;font-weight:600;color:var(--text);margin-bottom:6px;}
+  .step p{font-size:14.5px;color:var(--text-dim);line-height:1.65;}
+  .prose{margin-top:20px;}
+  .prose p{font-size:16px;color:var(--text-dim);line-height:1.72;margin-bottom:16px;max-width:64ch;}
+  .prose p strong{color:var(--text);font-weight:600;}
+  .prose ul{margin:0 0 18px;padding-left:0;list-style:none;max-width:64ch;}
+  .prose li{font-size:15.5px;color:var(--text-dim);padding-left:22px;position:relative;margin-bottom:11px;line-height:1.62;}
+  .prose li::before{content:'—';color:var(--accent-dim);position:absolute;left:0;}
+  .prose li strong{color:var(--text);font-weight:600;}
+  .site-foot{border-top:1px solid var(--panel-border);padding:28px 0 44px;margin-top:40px;}
+  .site-foot .inner{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px;font-size:13.5px;color:var(--text-faint);max-width:1020px;margin:0 auto;padding:0 32px;}
+  .site-foot a{color:var(--text-dim);font-weight:500;} .site-foot a:hover{color:var(--accent);}
+  .site-foot .links{display:flex;gap:22px;}
+  @media (max-width:640px){.hero{padding:44px 0 40px;} .section{padding:44px 0;}}
+</style>
+</head>
+<body>
+<header class="site-head">
+  <div class="inner">
+    <a href="../index.html" class="brand"><span class="mark"></span>Khalil Gueye</a>
+    <div id="nav" data-current="blog"></div>
+  </div>
+</header>
+<script src="../nav.js"></script>
+<main class="wrap">
+  <section class="hero">
+    <a href="index.html" class="back">← Blog</a>
+    <h1>ReAct Loops: Why I Keep Building Agents This Way</h1>
+    <p class="summary">A look at the Reason + Act pattern that underlies every agent I've built so far, and why I keep choosing it over more complex multi-agent frameworks.</p>
+    <div class="tags"><span class="tag">AI Agents</span><span class="tag">Software Architecture</span><span class="tag">ReAct</span><span class="tag">LLMs</span></div>
+  </section>
+  <section class="section">
+    <div class="prose"><p>I want to go into some detail on the ReAct pattern, because it's the architecture behind basically everything I've built so far — the CSV brief agent, the writeup publishing bots, all of it — and I think it's worth explaining why I keep reaching for it over other agent designs.</p><p>ReAct stands for Reason + Act. The shape of it is simple: the model reasons about what to do next, picks a tool, the tool actually runs, the result gets fed back into the model's context, and it reasons again with that new information. Repeat until the model decides it's done. That's the whole architecture. No separate planning phase, no fixed pipeline of steps decided in advance — the model figures out the next move at every single step, informed by everything that's happened so far.</p><p><strong>Why I like it over other approaches:</strong></p><ul><li><strong>Transparency.</strong> Every single decision the model makes is visible — you can literally print out "the model chose tool X with these inputs" at every step and watch the whole reasoning trail unfold. Compare that to more opaque multi-agent frameworks where agents hand off to each other through some internal orchestration layer you can't easily inspect. With ReAct, if something goes wrong, you can point to the exact tool call that caused it.</li><li><strong>It's just Python.</strong> There's no special framework required — it's a loop, a dispatch table mapping tool names to functions, and an API call. You can write the whole thing in under 300 lines and understand every part of it. That matters a lot to me because I want to actually own the systems I'm building, not depend on a black-box library that abstracts the loop away from me.</li><li><strong>Versatility.</strong> Because the "tools" are just Python functions with a schema attached, you can hand the model access to almost anything — a database query, a web search, a regression, a file write. The loop doesn't care what the tools do.</li></ul><p>The part I find most interesting: tools can generate more agents. A tool doesn't have to be a simple, static function — it can itself spin up another instance of the loop, with its own system prompt and its own tool set, and return that sub-agent's final output as the tool result. So you can have an orchestrating ReAct loop that, instead of calling a "search the web" function, calls a "delegate this entire research task to a sub-agent" function — and that sub-agent runs its own full ReAct loop before handing back a result. It's recursive in a genuinely useful way, and it's still just the same simple pattern all the way down.</p></div>
+  </section>
+</main>
+<footer class="site-foot">
+  <div class="inner">
+    <span>© 2026 Khalil Gueye — Raleigh, NC</span>
+    <span class="links">
+      <a href="https://github.com/khalilsgueye" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://youtube.com/@khalilgueye10" target="_blank" rel="noopener">YouTube</a>
+      <a href="https://twitter.com/khalilgueye10" target="_blank" rel="noopener">X</a>
+    </span>
+  </div>
+</footer>
+</body>
+</html>
