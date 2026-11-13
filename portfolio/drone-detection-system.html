@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Drone Detection System — Portfolio — Khalil Gueye</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#FFFFFF;--bg-raise:#F2F2F2;--panel:#FFFFFF;--panel-border:#DDDDDD;--text:#111111;--text-dim:#333333;--text-faint:#595959;--accent:#000000;--accent-dim:#4D4D4D;--mono:'JetBrains Mono',ui-monospace,'SF Mono',Consolas,monospace;--sans:'DM Sans',-apple-system,sans-serif;--serif:'Bricolage Grotesque',Georgia,serif;}
+  *{box-sizing:border-box;margin:0;padding:0;} html{scroll-behavior:smooth;}
+  body{background:var(--bg);color:var(--text);font-family:var(--sans);line-height:1.6;min-height:100vh;-webkit-font-smoothing:antialiased;}
+  a{color:inherit;text-decoration:none;} ::selection{background:var(--accent);color:#fff;} :focus-visible{outline:2px solid var(--accent);outline-offset:3px;}
+  .wrap{max-width:780px;margin:0 auto;padding:0 32px;}
+
+  .hero{padding:60px 0 52px;}
+  .back{font-family:var(--mono);font-size:12.5px;color:var(--text-faint);display:inline-block;margin-bottom:30px;transition:color 0.15s ease;}
+  .back:hover{color:var(--accent);}
+  .hero h1{font-family:var(--serif);font-weight:600;font-size:clamp(40px,6vw,60px);letter-spacing:-0.02em;line-height:1.03;color:var(--text);}
+  .hero .summary{margin-top:26px;font-size:17px;line-height:1.75;color:var(--text-dim);max-width:62ch;}
+  .hero .tags{margin-top:26px;display:flex;flex-wrap:wrap;gap:7px;}
+  .hero .tag{font-family:var(--mono);font-size:11px;letter-spacing:0.02em;color:var(--accent);background:#F2F2F2;border:1px solid #CFCFCF;padding:3px 10px;border-radius:2px;}
+  .section{padding:52px 0;border-top:1px solid var(--panel-border);}
+  .section h2{font-family:var(--serif);font-weight:600;font-size:clamp(28px,4vw,36px);letter-spacing:-0.01em;color:var(--text);}
+  .section .lead{margin-top:12px;font-size:16px;line-height:1.7;color:var(--text-dim);max-width:62ch;}
+  .steps{margin-top:30px;}
+  .step{display:grid;grid-template-columns:42px 1fr;gap:20px;padding:22px 0;border-bottom:1px solid var(--panel-border);}
+  .step:last-child{border-bottom:none;}
+  .step .n{font-family:var(--mono);font-size:14px;font-weight:600;color:var(--accent);padding-top:2px;}
+  .step h3{font-size:16.5px;font-weight:600;color:var(--text);margin-bottom:6px;}
+  .step p{font-size:14.5px;color:var(--text-dim);line-height:1.65;}
+  .prose{margin-top:20px;}
+  .prose p{font-size:16px;color:var(--text-dim);line-height:1.72;margin-bottom:16px;max-width:64ch;}
+  .prose p strong{color:var(--text);font-weight:600;}
+  .prose ul{margin:0 0 18px;padding-left:0;list-style:none;max-width:64ch;}
+  .prose li{font-size:15.5px;color:var(--text-dim);padding-left:22px;position:relative;margin-bottom:11px;line-height:1.62;}
+  .prose li::before{content:'—';color:var(--accent-dim);position:absolute;left:0;}
+  .prose li strong{color:var(--text);font-weight:600;}
+
+  @media (max-width:640px){.hero{padding:44px 0 40px;} .section{padding:44px 0;}}
+
+/* ---------- SHARED SITE CHROME (identical on every page, incl. index.html) ---------- */
+.nav{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px;padding:24px var(--pad,clamp(20px,4vw,48px))}
+.brand{font-family:'Bricolage Grotesque','DM Sans',system-ui,sans-serif;font-size:24px;font-weight:800;letter-spacing:-0.03em;text-decoration:none;color:#000}
+.links{display:flex;flex-wrap:wrap;align-items:center;gap:clamp(18px,3vw,36px);font-size:16px;font-weight:500}
+.links a{color:#333;text-decoration:none}
+.links a:hover{color:#000}
+.links a.current{color:#000;font-weight:600}
+.links a.pill{color:#fff;background:#000;padding:12px 22px;border-radius:999px;font-weight:600}
+.links a.pill:hover{background:#333;color:#fff}
+.footer{background:#000;color:#fff;padding:clamp(72px,10vw,112px) clamp(20px,4vw,48px)}
+.footer-inner{max-width:1120px;margin:0 auto}
+.footer h2{font-family:'Bricolage Grotesque','DM Sans',system-ui,sans-serif;margin:0 0 48px;font-size:clamp(44px,7vw,64px);line-height:1.02;font-weight:800;letter-spacing:-0.03em}
+.footer-row{display:flex;flex-wrap:wrap;gap:24px 40px;justify-content:space-between;align-items:baseline}
+.footer-links{display:flex;flex-wrap:wrap;gap:32px;font-size:18px;font-weight:600}
+.footer-links a{text-decoration:none}
+.footer-links a:hover{text-decoration:underline}
+.copy{font-size:15px;color:#bfbfbf}
+</style>
+<link rel="stylesheet" href="/assets/retro.css" id="retro-style">
+</head>
+<body>
+<header class="nav">
+  <a class="brand" href="../index.html">Khalil Gueye</a>
+  <nav class="links" aria-label="Main">
+    <a href="index.html" class="current">Portfolio</a>
+    <a href="../writeups/">Writeups</a>
+    <a href="../blog/">Blog</a>
+    <a href="../videos/">Videos</a>
+    <a href="../index.html#about">Profile</a>
+    <a class="pill" href="../index.html#contact">Contact</a>
+  </nav>
+</header>
+<main class="wrap">
+  <section class="hero">
+    <a href="index.html" class="back">← Portfolio</a>
+    <h1>Drone Detection System</h1>
+    <p class="byline">Khalil Gueye</p>
+    <p class="summary">A system built to receive, interpret, and display the Remote ID signals broadcast by drones flying nearby.</p>
+  </section>
+  <section class="section">
+    <h2>Overview</h2>
+    <div class="prose"><p>This is a drone detection system built to receive, interpret, and then display Remote ID (RID) signals emitted by drones flying nearby. The FAA requires all drones above 250&nbsp;g to broadcast Remote ID. However, some custom-made, illegal, or government drones may not emit it, and those won’t be picked up by this detector.</p><p>Drones emit RID over Wi-Fi or Bluetooth. The ESP32-S3 has both Wi-Fi and Bluetooth receivers, so it’s capable of detecting these signals. There is Mesh Mapper firmware for a XIAO chip available on GitHub. We don’t use a XIAO chip, but ours is similar, so it’s a good starting point. The XIAO firmware has the useful logic for the detection process, but lacks the configuration we need, such as how the app starts and how memory is organized. We take that firmware, modify it for our use case, and flash it onto our ESP32.</p></div>
+  </section>
+  <section class="section">
+    <h2>Firmware</h2>
+    <div class="prose"><p>The ESP32’s Wi-Fi and Bluetooth receivers are built to listen for signals at 2.4 GHz and turn them into bits according to the two standards. Once a signal is received and demodulated, it’s filtered against certain criteria to check whether it has the characteristics of a Remote ID. If it does, the ID is turned into a text object and sent over the USB port.</p></div>
+  </section>
+  <section class="section">
+    <h2>Python</h2>
+    <div class="prose"><p>We built a Python program that runs persistently and displays the RID in the terminal. It listens on the USB port for messages passed by the ESP32, and when it receives an RID object, it displays it in the terminal.</p></div>
+  </section>
+  <section class="section">
+    <h2>Future Iterations</h2>
+    <div class="prose"><p>We can make this system more versatile and powerful by having the ESP32 pass its text objects to a Meshtastic radio chip and broadcast them over LoRa to a receiver. This would let us set up multiple nodes and potentially triangulate the location of drones that don’t already broadcast their coordinates. We would have the program listen over Wi-Fi, or set up a listening device connected over USB. We could then display the results on a webpage or another more useful medium.</p></div>
+  </section>
+</main>
+<footer class="footer">
+  <div class="footer-inner">
+    <h2>Get in touch.</h2>
+    <div class="footer-row">
+      <div class="footer-links">
+        <a href="mailto:khalil.sariyah@gmail.com">Email</a>
+        <a href="https://github.com/khalilsgueye" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://www.linkedin.com/in/khalil-gueye-7a2786219" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="https://twitter.com/kiksint" target="_blank" rel="noopener">X</a>
+      </div>
+      <div class="copy">© 2026 Khalil Gueye · Raleigh, NC</div>
+    </div>
+  </div>
+</footer>
+</body>
+</html>

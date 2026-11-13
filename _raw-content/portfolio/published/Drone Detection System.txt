@@ -1,0 +1,18 @@
+Drone Detection System
+
+Overview
+This is a drone detection system built to receive, interpret, and then display Remote ID signals emitted by drones flying nearby. The FAA requires that all drones above 250 g broadcast this Remote ID. However, some custom-made, illegal, or government drones may not emit it, and thus won’t be detected by this detector.
+
+Drones emitting RID do so over Wi-Fi or Bluetooth. The ESP32-S3 has both Wi-Fi and Bluetooth receivers and is thus capable of detecting the signals. There is a Mesh Mapper firmware designed for a XIAO chip available on GitHub. We do not use a XIAO chip, but our chip is similar, so it’s a start. The XIAO firmware has the useful logic for the functionality of the process, but lacks the configuration, such as the starting of the app and organization of memory, that we need. We take the firmware, modify it to our use case, and then flash it onto our ESP32.
+
+Firmware
+
+The ESP32 Wi-Fi and Bluetooth receiver is built to listen for waves at the 2.4 GHz frequency and turn them into bits according to the two standards. Once a wave is received and demodulated, it is filtered by certain criteria to check whether it has the characteristics of a Remote ID. If so, the ID is turned into a text object and sent over the USB port.
+
+Python
+
+We built a Python program to run persistently and display the RID in the terminal. This program listens on the USB port for the message passed by the ESP32. When it receives an RID object, it displays it in the terminal.
+
+Future Iterations
+
+We can modify this system to be more versatile and powerful by having the ESP32 pass the text objects to a Meshtastic radio chip and broadcast them via LoRa to a receiver. This would allow us to set up multiple nodes and potentially triangulate the location of drones that don’t already broadcast coordinates. We would have the program listen over Wi-Fi or set up a listening device connected to USB. We could then display results on a webpage or another more useful medium.

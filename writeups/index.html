@@ -6,21 +6,21 @@
 <title>Writeups — Khalil Gueye</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Serif:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   :root{
     --bg: #FFFFFF;
-    --bg-raise: #F4F6F9;
+    --bg-raise: #F2F2F2;
     --panel: #FFFFFF;
-    --panel-border: #D5DCE5;
-    --text: #0B1F3A;
-    --text-dim: #4A5A70;
-    --text-faint: #8A97A8;
-    --accent: #1F4E79;
-    --accent-dim: #5A7CA0;
-    --mono: 'IBM Plex Mono', ui-monospace, 'SF Mono', Consolas, monospace;
-    --sans: 'IBM Plex Sans', -apple-system, sans-serif;
-    --serif: 'IBM Plex Serif', Georgia, serif;
+    --panel-border: #DDDDDD;
+    --text: #111111;
+    --text-dim: #333333;
+    --text-faint: #595959;
+    --accent: #000000;
+    --accent-dim: #4D4D4D;
+    --mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Consolas, monospace;
+    --sans: 'DM Sans', -apple-system, sans-serif;
+    --serif: 'Bricolage Grotesque', Georgia, serif;
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -41,46 +41,16 @@
 
   .wrap{ max-width: 1020px; margin: 0 auto; padding: 0 32px; }
 
-  /* ---------- HEADER ---------- */
-  .site-head{
-    border-bottom: 1px solid var(--panel-border);
-    position: sticky; top: 0;
-    background: rgba(255,255,255,0.9);
-    backdrop-filter: blur(8px);
-    z-index: 50;
-  }
-  .site-head .inner{
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 20px 0;
-  }
-  .brand{
-    display: flex; align-items: center; gap: 11px;
-    font-family: var(--sans); font-weight: 600; font-size: 15px;
-    letter-spacing: 0.01em; color: var(--text);
-  }
-  .brand .mark{
-    width: 12px; height: 12px; background: var(--accent);
-    flex-shrink: 0; border-radius: 1px;
-  }
-  .site-nav{ display: flex; gap: 30px; }
-  .site-nav a{
-    font-size: 14.5px; color: var(--text-dim); font-weight: 500;
-    transition: color 0.15s ease;
-  }
-  .site-nav a:hover{ color: var(--accent); }
-  .site-nav a.current{ color: var(--text); }
-
   /* ---------- PAGE HEAD ---------- */
   .page-head{ padding: 72px 0 34px; }
   .page-head h1{
     font-family: var(--serif); font-weight: 600;
     font-size: clamp(38px, 5.5vw, 56px); letter-spacing: -0.02em;
     line-height: 1.03; color: var(--text);
+    display: flex; align-items: center; gap: 16px;
   }
-  .page-head .sub{
-    margin-top: 18px; font-size: 16.5px; line-height: 1.7;
-    color: var(--text-dim); max-width: 58ch;
-  }
+
+  .title-icon{ width: clamp(28px, 4vw, 40px); height: clamp(28px, 4vw, 40px); flex-shrink: 0; }
   .page-head .count{
     margin-top: 24px; font-family: var(--mono); font-size: 13px;
     color: var(--text-faint); letter-spacing: 0.02em;
@@ -104,46 +74,48 @@
     margin-top: 6px; font-size: 14px; line-height: 1.55;
     color: var(--text-dim); max-width: 66ch;
   }
-  .wu-tags{ margin-top: 13px; display: flex; flex-wrap: wrap; gap: 7px; }
-  .wu-tag{
-    font-family: var(--mono); font-size: 11px; letter-spacing: 0.02em;
-    color: var(--accent); background: #EEF3F9; border: 1px solid #BCD0E4;
-    padding: 3px 10px; border-radius: 2px;
-  }
 
   @media (max-width: 640px){
     .page-head{ padding: 52px 0 28px; }
   }
 
-  /* ---------- FOOTER ---------- */
-  .site-foot{
-    border-top: 1px solid var(--panel-border);
-    padding: 28px 0 44px;
-  }
-  .site-foot .inner{
-    display: flex; align-items: center; justify-content: space-between;
-    flex-wrap: wrap; gap: 14px;
-    font-size: 13.5px; color: var(--text-faint);
-  }
-  .site-foot a{ color: var(--text-dim); font-weight: 500; }
-  .site-foot a:hover{ color: var(--accent); }
-  .site-foot .links{ display: flex; gap: 22px; }
+/* ---------- SHARED SITE CHROME (identical on every page, incl. index.html) ---------- */
+.nav{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px;padding:24px var(--pad,clamp(20px,4vw,48px))}
+.brand{font-family:'Bricolage Grotesque','DM Sans',system-ui,sans-serif;font-size:24px;font-weight:800;letter-spacing:-0.03em;text-decoration:none;color:#000}
+.links{display:flex;flex-wrap:wrap;align-items:center;gap:clamp(18px,3vw,36px);font-size:16px;font-weight:500}
+.links a{color:#333;text-decoration:none}
+.links a:hover{color:#000}
+.links a.current{color:#000;font-weight:600}
+.links a.pill{color:#fff;background:#000;padding:12px 22px;border-radius:999px;font-weight:600}
+.links a.pill:hover{background:#333;color:#fff}
+.footer{background:#000;color:#fff;padding:clamp(72px,10vw,112px) clamp(20px,4vw,48px)}
+.footer-inner{max-width:1120px;margin:0 auto}
+.footer h2{font-family:'Bricolage Grotesque','DM Sans',system-ui,sans-serif;margin:0 0 48px;font-size:clamp(44px,7vw,64px);line-height:1.02;font-weight:800;letter-spacing:-0.03em}
+.footer-row{display:flex;flex-wrap:wrap;gap:24px 40px;justify-content:space-between;align-items:baseline}
+.footer-links{display:flex;flex-wrap:wrap;gap:32px;font-size:18px;font-weight:600}
+.footer-links a{text-decoration:none}
+.footer-links a:hover{text-decoration:underline}
+.copy{font-size:15px;color:#bfbfbf}
 </style>
+<link rel="stylesheet" href="/assets/retro.css" id="retro-style">
 </head>
 <body>
 
-<header class="site-head">
-  <div class="wrap inner">
-    <a href="../index.html" class="brand"><span class="mark"></span>Khalil Gueye</a>
-    <div id="nav" data-current="writeups"></div>
-  </div>
+<header class="nav">
+  <a class="brand" href="../index.html">Khalil Gueye</a>
+  <nav class="links" aria-label="Main">
+    <a href="../portfolio/">Portfolio</a>
+    <a href="index.html" class="current">Writeups</a>
+    <a href="../blog/">Blog</a>
+    <a href="../videos/">Videos</a>
+    <a href="../index.html#about">Profile</a>
+    <a class="pill" href="../index.html#contact">Contact</a>
+  </nav>
 </header>
-<script src="../nav.js"></script>
 
 <main class="wrap">
   <section class="page-head">
-    <h1>Writeups</h1>
-    <p class="sub">Hack The Box and CTF case studies — how a machine goes from an anonymous starting point to full compromise, and where a defender catches each step. Published only after a machine retires.</p>
+    <h1>Writeups<svg class="title-icon" viewBox="0 0 60 60" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 8 L38 8 L46 16 L46 52 L14 52 Z"/><path d="M38 8 L38 16 L46 16"/><path d="M19 43 L41 13"/><path d="M19 43 L15 50 L22 47 Z"/></svg></h1>
     <p class="count"><!-- COUNT -->9<!-- /COUNT --> published</p>
   </section>
 
@@ -153,73 +125,47 @@
       <a href="machine-slug.html" class="wu-row">
         <div class="wu-name">Machine Name</div>
         <div class="wu-desc">Short one-line description of the box.</div>
-        <div class="wu-tags">
-          <span class="wu-tag">Category</span>
-          <span class="wu-tag">Another</span>
-        </div>
       </a>
     -->
 
     <a href="jerry.html" class="wu-row">
       <div class="wu-name">Jerry</div>
       <div class="wu-desc">A single exposed Tomcat manager with default credentials hands over a SYSTEM shell in three commands — no chaining, no privesc, just a door nobody bothered to lock.</div>
-      <div class="wu-tags">
-        <span class="wu-tag">Web Exploitation</span>
-        <span class="wu-tag">Credential Attacks</span>
-        <span class="wu-tag">Web Shell Deployment</span>
-      </div>
     </a>
 
     <a href="sense.html" class="wu-row">
       <div class="wu-name">Sense</div>
       <div class="wu-desc">A pfSense firewall admin panel leaks its own credentials, then a stock RRD-graph endpoint hands over root-equivalent command execution.</div>
-      <div class="wu-tags">
-        <span class="wu-tag">Web Exploitation</span>
-        <span class="wu-tag">Command Injection</span>
-        <span class="wu-tag">Enumeration</span>
-        <span class="wu-tag">Firewall/Network Appliances</span>
-      </div>
     </a>
 
     <a href="nibbles.html" class="wu-row">
       <div class="wu-name">Nibbles</div>
       <div class="wu-desc">A default Apache page hides a vulnerable blogging CMS, a reused weak password, and a world-writable sudo script — three small mistakes that chain into full root.</div>
-      <div class="wu-tags">
-        <span class="wu-tag">Web Exploitation</span>
-        <span class="wu-tag">CMS Vulnerabilities</span>
-        <span class="wu-tag">File Upload Vulnerabilities</span>
-        <span class="wu-tag">Privilege Escalation</span>
-      </div>
     </a>
 
         <a href="htb-sherlock-brutus.html" class="wu-row">
       <div class="wu-name">HTB Sherlock: Brutus</div>
       <div class="wu-desc">A DFIR Sherlock reconstructing an SSH brute-force that compromised root directly, correlating auth.log and wtmp to separate bot noise from the attacker's real session.</div>
-      <div class="wu-tags"><span class="wu-tag">T1110</span><span class="wu-tag">T1110.001</span><span class="wu-tag">T1078</span><span class="wu-tag">T1021.004</span></div>
     </a>
 
-        <a href="htb-mirai.html" class="wu-row">
+    <a href="htb-mirai.html" class="wu-row">
       <div class="wu-name">HTB - Mirai</div>
       <div class="wu-desc">A Pi-hole panel fingerprints the device as a Raspberry Pi, default SSH creds hand over root instantly, and the real challenge is carving a deleted root.txt out of raw USB disk bytes.</div>
-      <div class="wu-tags"><span class="wu-tag">T1595</span><span class="wu-tag">T1592</span><span class="wu-tag">T1078</span><span class="wu-tag">T1083</span><span class="wu-tag">T1552</span></div>
     </a>
 
-        <a href="networked.html" class="wu-row">
+    <a href="networked.html" class="wu-row">
       <div class="wu-name">Networked</div>
       <div class="wu-desc">Chaining an upload filter bypass, filename-based command injection in a cron job, and a sudo script's whitespace-blind input filter to go from web access to root.</div>
-      <div class="wu-tags"><span class="wu-tag">T1190</span><span class="wu-tag">T1105</span><span class="wu-tag">T1059.004</span><span class="wu-tag">T1053.003</span><span class="wu-tag">T1548.003</span></div>
     </a>
 
-        <a href="htb-cap.html" class="wu-row">
+    <a href="htb-cap.html" class="wu-row">
       <div class="wu-name">HTB - Cap</div>
       <div class="wu-desc">An IDOR in a packet-capture dashboard leaks plaintext FTP creds, and a cap_setuid capability on Python delivers root.</div>
-      <div class="wu-tags"><span class="wu-tag">T1190</span><span class="wu-tag">T1552.001</span><span class="wu-tag">T1078</span><span class="wu-tag">T1548.001</span><span class="wu-tag">T1552.003</span></div>
     </a>
 
-        <a href="htb-blocky.html" class="wu-row">
+    <a href="htb-blocky.html" class="wu-row">
       <div class="wu-name">HTB - Blocky</div>
       <div class="wu-desc">A decompiled custom Minecraft plugin leaks a root MySQL password that's reused for SSH, and unrestricted sudoers membership finishes the job.</div>
-      <div class="wu-tags"><span class="wu-tag">T1046</span><span class="wu-tag">T1595.003</span><span class="wu-tag">T1552.001</span><span class="wu-tag">T1078</span><span class="wu-tag">T1548.003</span></div>
     </a>
 
     <!-- NEW-WRITEUP-HERE -->
@@ -227,24 +173,23 @@
     <a href="2million.html" class="wu-row">
       <div class="wu-name">2Million</div>
       <div class="wu-desc">Linux · five individually minor flaws chained from anonymous web access to root, with the detection and remediation for each.</div>
-      <div class="wu-tags">
-        <span class="wu-tag">API Security</span>
-        <span class="wu-tag">Web Exploitation</span>
-        <span class="wu-tag">Privilege Escalation</span>
-      </div>
     </a>
 
   </section>
 </main>
 
-<footer class="site-foot">
-  <div class="wrap inner">
-    <span>© 2026 Khalil Gueye — Raleigh, NC</span>
-    <span class="links">
-      <a href="https://www.linkedin.com/in/khalil-gueye-7a2786219" target="_blank" rel="noopener">LinkedIn</a>
-      <a href="https://github.com/khalilsgueye" target="_blank" rel="noopener">GitHub</a>
-      <a href="https://twitter.com/kiksint" target="_blank" rel="noopener">X</a>
-    </span>
+<footer class="footer">
+  <div class="footer-inner">
+    <h2>Get in touch.</h2>
+    <div class="footer-row">
+      <div class="footer-links">
+        <a href="mailto:khalil.sariyah@gmail.com">Email</a>
+        <a href="https://github.com/khalilsgueye" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://www.linkedin.com/in/khalil-gueye-7a2786219" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="https://twitter.com/kiksint" target="_blank" rel="noopener">X</a>
+      </div>
+      <div class="copy">© 2026 Khalil Gueye · Raleigh, NC</div>
+    </div>
   </div>
 </footer>
 

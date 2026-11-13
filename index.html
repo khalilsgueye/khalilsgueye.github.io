@@ -1,224 +1,218 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Khalil Gueye — Security Research & Applied AI</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Khalil Gueye</title>
+<meta name="description" content="Building creative solutions at the intersection of wireless technology, cybersecurity, and machine learning.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Serif:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-  :root{
-    --bg: #FFFFFF;
-    --bg-raise: #F4F6F9;
-    --panel: #FFFFFF;
-    --panel-border: #D5DCE5;
-    --text: #0B1F3A;
-    --text-dim: #4A5A70;
-    --text-faint: #8A97A8;
-    --accent: #1F4E79;
-    --accent-dim: #5A7CA0;
-    --mono: 'IBM Plex Mono', ui-monospace, 'SF Mono', Consolas, monospace;
-    --sans: 'IBM Plex Sans', -apple-system, sans-serif;
-    --serif: 'IBM Plex Serif', Georgia, serif;
-  }
+:root{
+  --black:#000; --white:#fff; --ink:#111; --body:#333; --muted:#595959;
+  --display:'Bricolage Grotesque','DM Sans',system-ui,sans-serif;
+  --text:'DM Sans',system-ui,sans-serif;
+  --mono:'JetBrains Mono',ui-monospace,monospace;
+  --pad:clamp(20px,4vw,48px);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--white);color:var(--black);font-family:var(--text);-webkit-font-smoothing:antialiased}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--black);outline-offset:3px}
+.skip{position:absolute;left:-999px;top:8px;background:var(--black);color:var(--white);padding:10px 16px;border-radius:999px;z-index:10}
+.skip:focus{left:var(--pad)}
 
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  html { scroll-behavior: smooth; }
+/* nav */
+.nav{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px;padding:24px var(--pad)}
+.brand{font-family:var(--display);font-size:24px;font-weight:800;letter-spacing:-0.03em;text-decoration:none}
+.links{display:flex;flex-wrap:wrap;align-items:center;gap:clamp(18px,3vw,36px);font-size:16px;font-weight:500}
+.links a{color:#333;text-decoration:none}
+.links a:hover{color:var(--black)}
+.links a.pill{color:var(--white);background:var(--black);padding:12px 22px;border-radius:999px;font-weight:600}
+.links a.pill:hover{background:#333;color:var(--white)}
 
-  body{
-    background: var(--bg);
-    color: var(--text);
-    font-family: var(--sans);
-    line-height: 1.6;
-    min-height: 100vh;
-    -webkit-font-smoothing: antialiased;
-  }
+/* hero carousel */
+.hero{position:relative;width:100%;height:clamp(520px,72vh,680px);overflow:hidden;background:#d9d9d9}
+.slide{position:absolute;inset:0;opacity:0;transition:opacity .9s ease;pointer-events:none}
+.slide.is-active{opacity:1;pointer-events:auto}
+.slide img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.card{position:absolute;left:var(--pad);bottom:56px;width:min(540px,calc(100% - 2*var(--pad)));background:rgba(255,255,255,.88);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);padding:clamp(24px,4vw,40px);border-radius:28px;box-shadow:0 24px 60px rgba(0,0,0,.18)}
+.kicker{font-family:var(--mono);font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.card h1{font-family:var(--display);margin:14px 0;font-size:clamp(36px,5vw,54px);line-height:1.02;font-weight:800;letter-spacing:-0.03em}
+.card p{margin:0 0 26px;font-size:18px;line-height:1.55;color:var(--body)}
+.btn{display:inline-block;background:var(--black);color:var(--white);text-decoration:none;font-size:15px;font-weight:600;padding:13px 24px;border-radius:999px}
+.btn:hover{background:#333}
+.controls{position:absolute;right:var(--pad);bottom:56px;z-index:2;display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.88);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);padding:8px;border-radius:999px;box-shadow:0 12px 40px rgba(0,0,0,.16)}
+.controls button{width:44px;height:44px;min-width:44px;border:0;background:transparent;border-radius:999px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:13px;color:var(--black)}
+.controls button[aria-current="true"]{background:var(--black);color:var(--white)}
+.controls svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+@media (max-width:820px){
+  .card{bottom:96px}
+  .controls{right:auto;left:50%;transform:translateX(-50%);bottom:24px}
+}
 
-  a { color: inherit; text-decoration: none; }
-  ::selection { background: var(--accent); color: #fff; }
-  :focus-visible{ outline: 2px solid var(--accent); outline-offset: 3px; }
+/* about */
+.about{padding:clamp(72px,12vw,144px) var(--pad)}
+.about-inner{max-width:760px;margin:0 auto;display:flex;flex-direction:column;align-items:center;text-align:center}
+.figure{width:220px;height:auto;stroke:var(--black);fill:none;stroke-width:3.5;stroke-linecap:round;stroke-linejoin:round}
+.about h2{font-family:var(--display);margin:48px 0 28px;font-size:clamp(44px,7vw,64px);line-height:1.02;font-weight:800;letter-spacing:-0.03em}
+.about p{margin:0;font-size:clamp(19px,2.4vw,22px);line-height:1.6;color:var(--body)}
 
-  .wrap{ max-width: 1020px; margin: 0 auto; padding: 0 32px; }
+/* footer */
+.footer{background:var(--black);color:var(--white);padding:clamp(72px,10vw,112px) var(--pad)}
+.footer-inner{max-width:1120px;margin:0 auto}
+.footer h2{font-family:var(--display);margin:0 0 48px;font-size:clamp(44px,7vw,64px);line-height:1.02;font-weight:800;letter-spacing:-0.03em}
+.footer-row{display:flex;flex-wrap:wrap;gap:24px 40px;justify-content:space-between;align-items:baseline}
+.footer-links{display:flex;flex-wrap:wrap;gap:32px;font-size:18px;font-weight:600}
+.footer-links a{text-decoration:none}
+.footer-links a:hover{text-decoration:underline}
+.copy{font-size:15px;color:#bfbfbf}
 
-  /* ---------- HEADER ---------- */
-  .site-head{
-    border-bottom: 1px solid var(--panel-border);
-    position: sticky; top: 0;
-    background: rgba(255,255,255,0.9);
-    backdrop-filter: blur(8px);
-    z-index: 50;
-  }
-  .site-head .inner{
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 20px 0;
-  }
-  .brand{
-    display: flex; align-items: center; gap: 11px;
-    font-family: var(--sans); font-weight: 600; font-size: 15px;
-    letter-spacing: 0.01em; color: var(--text);
-  }
-  .brand .mark{
-    width: 12px; height: 12px; background: var(--accent);
-    flex-shrink: 0; border-radius: 1px;
-  }
-  .site-nav{ display: flex; gap: 30px; }
-  .site-nav a{
-    font-size: 14.5px; color: var(--text-dim); font-weight: 500;
-    transition: color 0.15s ease;
-  }
-  .site-nav a:hover{ color: var(--accent); }
-
-  /* ---------- HERO ---------- */
-  .hero{ padding: 104px 0 80px; }
-  .hero .title{
-    font-family: var(--serif); font-weight: 600;
-    font-size: clamp(46px, 7vw, 78px); line-height: 1.02;
-    letter-spacing: -0.02em; color: var(--text);
-    max-width: 15ch;
-  }
-  .hero .role{
-    margin-top: 22px; font-size: clamp(18px, 2.2vw, 22px);
-    font-weight: 500; color: var(--accent); max-width: 34ch;
-  }
-  .hero .intro{
-    margin-top: 26px; font-size: 17px; line-height: 1.72;
-    color: var(--text-dim); max-width: 58ch;
-  }
-
-  /* one restrained load moment */
-  .fade{ opacity: 0; transform: translateY(8px); animation: rise 0.55s cubic-bezier(.2,.6,.2,1) forwards; }
-  .fade.d1{ animation-delay: 0.05s; }
-  .fade.d2{ animation-delay: 0.13s; }
-  .fade.d3{ animation-delay: 0.21s; }
-  @keyframes rise{ to{ opacity: 1; transform: none; } }
-  @media (prefers-reduced-motion: reduce){
-    .fade{ animation: none; opacity: 1; transform: none; }
-  }
-
-  /* ---------- DIRECTORY ---------- */
-  .directory{ padding: 0 0 96px; }
-  .dir-grid{
-    display: grid; grid-template-columns: repeat(4, 1fr);
-    border: 1px solid var(--panel-border); border-radius: 2px;
-    overflow: hidden;
-  }
-  .dir-col{
-    display: flex; flex-direction: column;
-    padding: 36px 30px 32px;
-    border-left: 1px solid var(--panel-border);
-    background: var(--panel);
-    transition: background 0.18s ease;
-    min-height: 232px;
-  }
-  .dir-col:first-child{ border-left: none; }
-  .dir-col:hover{ background: var(--bg-raise); }
-  .dir-col h2{
-    font-family: var(--serif); font-weight: 600; font-size: 23px;
-    color: var(--text); letter-spacing: -0.01em;
-    transition: color 0.18s ease;
-  }
-  .dir-col:hover h2{ color: var(--accent); }
-  .dir-col p{
-    margin-top: 12px; font-size: 14.5px; line-height: 1.65;
-    color: var(--text-dim); flex-grow: 1;
-  }
-  .dir-col .go{
-    margin-top: 20px; font-size: 14px; font-weight: 600;
-    color: var(--accent);
-  }
-  .dir-col .go span{
-    border-bottom: 1px solid transparent; padding-bottom: 1px;
-    transition: border-color 0.18s ease;
-  }
-  .dir-col:hover .go span{ border-color: var(--accent); }
-
-  @media (max-width: 900px){
-    .dir-grid{ grid-template-columns: repeat(2, 1fr); }
-    .dir-col:nth-child(odd){ border-left: none; }
-    .dir-col:nth-child(n+3){ border-top: 1px solid var(--panel-border); }
-  }
-
-  @media (max-width: 720px){
-    .dir-grid{ grid-template-columns: 1fr; }
-    .dir-col{ border-left: none; border-top: 1px solid var(--panel-border); min-height: 0; }
-    .dir-col:first-child{ border-top: none; }
-    .hero{ padding: 72px 0 56px; }
-  }
-
-  /* ---------- FOOTER ---------- */
-  .site-foot{
-    border-top: 1px solid var(--panel-border);
-    padding: 28px 0 44px;
-  }
-  .site-foot .inner{
-    display: flex; align-items: center; justify-content: space-between;
-    flex-wrap: wrap; gap: 14px;
-    font-size: 13.5px; color: var(--text-faint);
-  }
-  .site-foot a{ color: var(--text-dim); font-weight: 500; }
-  .site-foot a:hover{ color: var(--accent); }
-  .site-foot .links{ display: flex; gap: 22px; }
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .slide{transition:none}
+}
 </style>
+<link rel="stylesheet" href="/assets/retro.css" id="retro-style">
 </head>
 <body>
+<a class="skip" href="#about">Skip to content</a>
 
-<header class="site-head">
-  <div class="wrap inner">
-    <a href="index.html" class="brand"><span class="mark"></span>Khalil Gueye</a>
-    <div id="nav" data-current=""></div>
-  </div>
+<header class="nav">
+  <a class="brand" href="/">Khalil Gueye</a>
+  <nav class="links" aria-label="Main">
+    <a href="portfolio/">Portfolio</a>
+    <a href="writeups/">Writeups</a>
+    <a href="blog/">Blog</a>
+    <a href="videos/">Videos</a>
+    <a href="#about">Profile</a>
+    <a class="pill" href="#contact">Contact</a>
+  </nav>
 </header>
-<script src="nav.js"></script>
 
-<main class="wrap">
-  <section class="hero">
-    <h1 class="title fade d1">Security research and the systems built around it.</h1>
-    <p class="role fade d2">Offensive security research and applied AI engineering.</p>
-    <p class="intro fade d3">I document how real systems are compromised, and meticulously build transparent tools that create real value. What follows is a record of what I've researched, built, and published.</p>
+<main>
+  <section class="hero" id="top" aria-roledescription="carousel" aria-label="Featured projects">
+    <div class="slide is-active">
+      <img src="assets/Dronedetection.jpeg" alt="">
+      <div class="card">
+        <div class="kicker">EM / SIGINT</div>
+        <h1>Drone Detection</h1>
+        <p>Spotting drones in the air by what they transmit.</p>
+        <a class="btn" href="portfolio/drone-detection-system.html">View project →</a>
+      </div>
+    </div>
+    <div class="slide">
+      <img src="assets/hero-2.jpg" alt="">
+      <div class="card">
+        <div class="kicker">Cyber / AI</div>
+        <h1>Pentest Agent</h1>
+        <p>An agent that works through targets by reasoning over an ontology of services and techniques.</p>
+        <a class="btn" href="portfolio/">View project →</a>
+      </div>
+    </div>
+    <div class="slide">
+      <img src="assets/Meshtastic.png" alt="">
+      <div class="card">
+        <div class="kicker">RF / Mesh</div>
+        <h1>RF Wireless Network</h1>
+        <p>Building long-range mesh links with Meshtastic to keep comms up when infrastructure isn't there.</p>
+        <a class="btn" href="portfolio/">View project →</a>
+      </div>
+    </div>
+    <div class="slide">
+      <img src="assets/hero-1.jpg" alt="">
+      <div class="card">
+        <div class="kicker">ML / Tooling</div>
+        <h1>ML Training Tools</h1>
+        <p>Building tooling that turns raw data into labeled, versioned sets for training models.</p>
+        <a class="btn" href="portfolio/">View project →</a>
+      </div>
+    </div>
+    <div class="slide">
+      <img src="assets/hero-3.jpg" alt="">
+      <div class="card">
+        <div class="kicker">Blue Team / SIEM</div>
+        <h1>Wazuh SIEM</h1>
+        <p>Standing up a Wazuh SIEM to centralize logs, detect threats, and alert in real time.</p>
+        <a class="btn" href="portfolio/">View project →</a>
+      </div>
+    </div>
+    <div class="controls">
+      <button type="button" id="prev" aria-label="Previous project"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+      <button type="button" data-go="0" aria-label="Show project 1" aria-current="true">01</button>
+      <button type="button" data-go="1" aria-label="Show project 2">02</button>
+      <button type="button" data-go="2" aria-label="Show project 3">03</button>
+      <button type="button" data-go="3" aria-label="Show project 4">04</button>
+      <button type="button" data-go="4" aria-label="Show project 5">05</button>
+      <button type="button" id="next" aria-label="Next project"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
+    </div>
   </section>
 
-  <section class="directory">
-    <div class="dir-grid">
-
-      <a href="writeups/" class="dir-col">
-        <h2>Writeups</h2>
-        <p>Hack The Box and CTF case studies. How a machine goes from an anonymous starting point to full compromise, and where a defender catches each step.</p>
-        <div class="go"><span>View writeups</span></div>
-      </a>
-
-      <a href="portfolio/" class="dir-col">
-        <h2>Portfolio</h2>
-        <p>AI agents and automation I've designed and shipped — from voice-driven publishing pipelines to data-analysis tooling that keeps computation out of the model.</p>
-        <div class="go"><span>View portfolio</span></div>
-      </a>
-
-      <a href="blog/" class="dir-col">
-        <h2>Blog</h2>
-        <p>Notes on security research and applied AI as they happen — shorter and less structured than a full writeup or portfolio entry.</p>
-        <div class="go"><span>Read the blog</span></div>
-      </a>
-
-      <a href="videos/" class="dir-col">
-        <h2>Videos</h2>
-        <p>Long-form walkthroughs and live problem-solving on YouTube, published as machines retire.</p>
-        <div class="go"><span>Watch on YouTube</span></div>
-      </a>
-
+  <section class="about" id="about">
+    <div class="about-inner">
+      <svg class="figure" viewBox="0 0 240 320" role="img" aria-label="Stick figure holding a radio antenna">
+        <circle cx="120" cy="70" r="26"/>
+        <path d="M120 96V200"/>
+        <path d="M120 126L78 168"/>
+        <path d="M120 126L164 104"/>
+        <path d="M164 104L178 56"/>
+        <path d="M120 200L90 286"/>
+        <path d="M120 200L150 286"/>
+        <path d="M60 286H180" stroke-width="2"/>
+        <path d="M192 50A22 22 0 0 1 192 82" stroke-width="3"/>
+        <path d="M204 38A40 40 0 0 1 204 94" stroke-width="3"/>
+      </svg>
+      <h2>Hi, I’m Khalil.</h2>
+      <p>I’m passionate about building creative solutions at the intersection of wireless technology, cybersecurity, and machine learning. I’m driven to learn and build as much as I can. I’d love to collaborate and build community.</p>
     </div>
   </section>
 </main>
 
-<footer class="site-foot">
-  <div class="wrap inner">
-    <span>© 2026 Khalil Gueye — Raleigh, NC</span>
-    <span class="links">
-      <a href="https://www.linkedin.com/in/khalil-gueye-7a2786219" target="_blank" rel="noopener">LinkedIn</a>
-      <a href="https://github.com/khalilsgueye" target="_blank" rel="noopener">GitHub</a>
-      <a href="https://twitter.com/kiksint" target="_blank" rel="noopener">X</a>
-    </span>
+<footer class="footer" id="contact">
+  <div class="footer-inner">
+    <h2>Get in touch.</h2>
+    <div class="footer-row">
+      <div class="footer-links">
+        <a href="mailto:khalil.sariyah@gmail.com">khalil.sariyah@gmail.com</a>
+        <a href="https://github.com/khalilsgueye" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://www.linkedin.com/in/khalil-gueye-7a2786219" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="https://twitter.com/kiksint" target="_blank" rel="noopener">X</a>
+      </div>
+      <div class="copy">© 2026 Khalil Gueye · Raleigh, NC</div>
+    </div>
   </div>
 </footer>
 
+<script>
+(function(){
+  var slides=[].slice.call(document.querySelectorAll('.slide'));
+  var dots=[].slice.call(document.querySelectorAll('[data-go]'));
+  var hero=document.getElementById('top');
+  var i=0,timer=null;
+  var reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function show(n){
+    i=(n+slides.length)%slides.length;
+    slides.forEach(function(s,k){
+      var on=k===i;
+      s.classList.toggle('is-active',on);
+      s.setAttribute('aria-hidden',on?'false':'true');
+      [].forEach.call(s.querySelectorAll('a'),function(a){a.tabIndex=on?0:-1;});
+    });
+    dots.forEach(function(d,k){ if(k===i){d.setAttribute('aria-current','true');}else{d.removeAttribute('aria-current');} });
+  }
+  function start(){ if(reduce||timer)return; timer=setInterval(function(){show(i+1);},6500); }
+  function stop(){ clearInterval(timer); timer=null; }
+  document.getElementById('prev').addEventListener('click',function(){show(i-1);});
+  document.getElementById('next').addEventListener('click',function(){show(i+1);});
+  dots.forEach(function(d){ d.addEventListener('click',function(){show(parseInt(d.getAttribute('data-go'),10));}); });
+  hero.addEventListener('mouseenter',stop);
+  hero.addEventListener('mouseleave',start);
+  hero.addEventListener('focusin',stop);
+  hero.addEventListener('focusout',start);
+  show(0); start();
+})();
+</script>
 </body>
 </html>

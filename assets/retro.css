@@ -1,0 +1,66 @@
+/* Early-2000s retro theme. Loaded last on every page so it overrides page styles.
+   Remove the <link id="retro-style"> tag from a page to get the original look back. */
+
+/* type + flatten modern effects */
+*,*::before,*::after{
+  font-family:"Times New Roman",Times,serif !important;
+  border-radius:0 !important;
+  box-shadow:none !important;
+  text-shadow:none !important;
+  -webkit-backdrop-filter:none !important;
+  backdrop-filter:none !important;
+  letter-spacing:normal !important;
+}
+body{background:#fff !important;color:#000 !important;-webkit-font-smoothing:auto !important}
+h1,h2,h3,.brand,.wu-name,.v-name{font-weight:bold !important;line-height:1.15 !important}
+
+/* page titles: smaller, plainer */
+.card h1{font-size:clamp(28px,4vw,38px) !important}
+.about h2,.page-head h1,.case-hero h1,.hero h1{font-size:clamp(30px,4.5vw,42px) !important}
+.doc h2{font-size:22px !important}
+
+/* header bar */
+.nav{background:#336699 !important;border-bottom:3px solid #1f4d7a !important;padding-top:14px !important;padding-bottom:14px !important}
+.nav .brand,.nav .links a,.nav .links a.pill{color:#fff !important;background:none !important;padding:0 !important;text-decoration:none !important}
+.nav .links a{font-weight:normal !important}
+.nav .links a:hover,.nav .links a.current{text-decoration:underline !important}
+
+/* links */
+main a{color:#0033cc !important}
+main a:visited{color:#551a8b !important}
+main a:hover{color:#cc0000 !important}
+.prose a,.doc a,.back{text-decoration:underline !important}
+.wu-name,.v-name{color:#0033cc !important;text-decoration:underline !important}
+.wu-row:hover .wu-name,.v-row:hover .v-name{color:#cc0000 !important}
+
+/* buttons */
+.btn,main .card .btn{background:linear-gradient(#fff,#dcdcdc) !important;color:#000 !important;border:1px solid #888 !important;padding:5px 14px !important;font-size:15px !important;font-weight:normal !important;text-decoration:none !important}
+.btn:hover,main .card .btn:hover{background:linear-gradient(#fff,#c8c8c8) !important;color:#000 !important}
+
+/* hero carousel boxes */
+.card{background:#fff !important;border:1px solid #999 !important;width:min(340px,calc(100% - 2*var(--pad))) !important;padding:16px 18px !important}
+.card .kicker{font-size:11px !important;color:#666 !important}
+.card h1{font-size:22px !important;margin:4px 0 6px !important}
+.card p{font-size:14px !important;line-height:1.4 !important;margin:0 0 12px !important}
+.card .btn,main .card .btn{font-size:13px !important;padding:3px 10px !important}
+.controls{background:#fff !important;border:1px solid #888 !important;padding:4px !important;gap:4px !important}
+.controls button{width:34px !important;height:34px !important;min-width:34px !important;border:1px solid #aaa !important;background:linear-gradient(#fff,#dcdcdc) !important;color:#000 !important}
+.controls button[aria-current="true"]{background:#336699 !important;color:#fff !important;border-color:#1f4d7a !important}
+
+/* small labels */
+.tag,.chip{background:#f2f2f2 !important;border:1px solid #bbb !important;color:#333 !important}
+
+/* footer */
+.footer{background:#eee !important;color:#000 !important;border-top:3px solid #336699 !important;padding-top:40px !important;padding-bottom:40px !important}
+.footer h2{font-size:26px !important;margin:0 0 16px !important}
+.footer-links{font-size:16px !important;font-weight:normal !important;gap:18px !important}
+.footer-links a{color:#0033cc !important;text-decoration:underline !important}
+.footer-links a:hover{color:#cc0000 !important}
+.copy{color:#555 !important;font-size:13px !important}
+
+/* article subtitles: small, and sections flow together like one piece of writing */
+.section{padding:18px 0 4px !important;border-top:none !important}
+.section h2{font-size:20px !important;margin:0 0 8px !important}
+.section .prose{margin-top:0 !important}
+.wrap > .hero{padding-bottom:16px !important}
+.byline{margin-top:8px !important;font-size:16px !important;color:#555 !important}
